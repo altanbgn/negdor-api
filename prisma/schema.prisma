@@ -1,0 +1,120 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String   @id @unique @default(cuid())
+  avatar      String?
+  email       String   @unique
+  firstname   String
+  lastname    String
+  username    String   @unique
+  phonenumber String?
+  password    String
+  role        UserRole @default(USER)
+  reviews     Review[]
+  ratings     Rating[]
+  member      Member[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
+}
+
+model Organization {
+  id               String     @id @unique @default(cuid())
+  name             String
+  shortDescription String
+  fullDescription  String
+  director         String     @default("")
+  emails           String[]
+  phonenumbers     String[]
+  locations        String[]
+  features         String[]
+  logo             String? // Image
+  banner           String? // Image
+  images           String[]
+  categories       Category[]
+  tags             Tag[]
+  members          Member[]
+  reviews          Review[]
+  ratings          Rating[]
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @default(now()) @updatedAt
+}
+
+model Review {
+  id             String       @id @unique @default(cuid())
+  title          String
+  body           String
+  images         String[]
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+  createdUser    User         @relation(fields: [createdUserId], references: [id])
+  createdUserId  String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @default(now()) @updatedAt
+}
+
+model Rating {
+  id             String       @id @unique @default(cuid())
+  value          Int
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+  createdUser    User         @relation(fields: [createdUserId], references: [id])
+  createdUserId  String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @default(now()) @updatedAt
+}
+
+model Category {
+  id            String         @id @unique @default(cuid())
+  icon          String?
+  value         String
+  organizations Organization[]
+  children      Category[]     @relation("children")
+  parent        Category?      @relation("children", fields: [parentId], references: [id])
+  parentId      String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @default(now()) @updatedAt
+}
+
+model Tag {
+  id            String         @id @unique @default(cuid())
+  icon          String?
+  value         String         @unique
+  organizations Organization[]
+  children      Tag[]          @relation("children")
+  parent        Tag?           @relation("children", fields: [parentId], references: [id])
+  parentId      String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @default(now()) @updatedAt
+}
+
+model Member {
+  id             String        @id @unique @default(cuid())
+  user           User?         @relation(fields: [userId], references: [id])
+  userId         String?
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+  organizationId String?
+  role           MemberRole    @default(MEMBER)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @default(now()) @updatedAt
+}
+
+enum UserRole {
+  USER
+  CLIENT
+  MODERATOR
+  ADMIN
+}
+
+enum MemberRole {
+  MEMBER
+  MODERATOR
+  ADMIN
+  OWNER
+}
