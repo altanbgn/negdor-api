@@ -7,21 +7,24 @@ export default async function (query: any) {
   let preparedQuery = {
     page: parseInt(sanitizedQuery?.page as string || "1"),
     perPage: parseInt(sanitizedQuery?.perPage as string || "10"),
+    include: {
+      categories: true,
+      _count: { select: { ratings: true, reviews: true } }
+    }
   }
 
-  let result = await prisma.category.findMany({
+  let result = await prisma.organization.findMany({
     where: {
       include: { children: true }
     },
     skip: (preparedQuery.page - 1) * preparedQuery.perPage,
-    take: preparedQuery.perPage,
-
+    take: preparedQuery.perPage
   })
 
   return {
     list: result,
-    currentPage: preparedQuery.page,
+    page: preparedQuery.page,
     perPage: preparedQuery.perPage,
-    total: await prisma.category.count()
+    total: await prisma.organization.count()
   }
 }

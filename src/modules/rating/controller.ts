@@ -5,11 +5,11 @@ import httpStatus from "http-status"
 import operations from "./operations"
 import validator from "./validator"
 import catchAsync from "@/utils/catch-async"
+import { RatingCreatePayload, RatingUploadPayload } from "./types"
 
 export default {
   find: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const result = await operations.find(req.query)
-
     res.status(httpStatus.OK).send({ data: result })
   }),
 
@@ -19,14 +19,14 @@ export default {
   }),
 
   create: catchAsync(async (req: Request, res: Response): Promise<void> => {
-    const sanitizedPayload = await validator.createSchema.validateAsync(req.body)
+    const sanitizedPayload: RatingCreatePayload = await validator.createSchema.validateAsync(req.body)
 
-    const result = await operations.create(sanitizedPayload)
+    const result = await operations.create(sanitizedPayload, res.locals.user)
     res.status(httpStatus.OK).send({ data: result })
   }),
 
   updateById: catchAsync(async (req: Request, res: Response): Promise<void> => {
-    const sanitizedPayload = await validator.updateSchema.validateAsync(req.body)
+    const sanitizedPayload: RatingUploadPayload = await validator.updateSchema.validateAsync(req.body)
 
     const result = await operations.updateById(req.params.id, sanitizedPayload)
     res.status(httpStatus.OK).send({ data: result })

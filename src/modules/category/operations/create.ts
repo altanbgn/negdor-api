@@ -1,11 +1,7 @@
-import ApiError from "@/utils/api-error"
+// Local
+import prisma from "@/prisma"
+import { CreatePayload } from "../types"
 
-const create = async (data: CreatePayload, user: any) => {
-  const isPermitted: boolean = checkPermission(user)
-
-  if (!isPermitted) {
-    throw new ApiError(httpStatus.FORBIDDEN, "Insufficient permission!")
-  }
-
+export default async function (data: CreatePayload) {
   return await prisma.category.create({ data })
 }

@@ -9,7 +9,6 @@ import catchAsync from "@/utils/catch-async"
 export default {
   find: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const result = await operations.find(req.query)
-
     res.status(httpStatus.OK).send({ data: result })
   }),
 

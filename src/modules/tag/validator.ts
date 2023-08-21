@@ -2,13 +2,11 @@ import Joi from "joi"
 
 const createSchema = Joi.object().keys({
   icon: Joi.string(),
-  parentId: Joi.string(),
   value: Joi.string().required(),
 })
 
 const updateSchema = Joi.object().keys({
   icon: Joi.string(),
-  parentId: Joi.string(),
   value: Joi.string(),
 })
 

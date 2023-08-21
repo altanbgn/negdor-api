@@ -6,10 +6,10 @@ import httpStatus from "http-status"
 import prisma from "@/prisma"
 import config from "@/utils/config"
 import ApiError from "@/utils/api-error"
-import { LoginBody } from "../types"
+import { LoginPayload } from "../types"
 
-export default async function login(data: LoginBody): Promise<string> {
-  const { email, password } = data
+export default async function login(payload: LoginPayload): Promise<string> {
+  const { email, password } = payload
 
   const foundUser = await prisma.user.findUnique({ where: { email } })
 

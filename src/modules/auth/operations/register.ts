@@ -6,9 +6,9 @@ import httpStatus from "http-status"
 import prisma from "@/prisma"
 import config from "@/utils/config"
 import ApiError from "@/utils/api-error"
-import { RegisterBody } from "../types"
+import { RegisterPayload } from "../types"
 
-export default async function register(data: RegisterBody): Promise<string> {
+export default async function register(payload: RegisterPayload): Promise<string> {
   const {
     email,
     firstname,
@@ -16,7 +16,7 @@ export default async function register(data: RegisterBody): Promise<string> {
     username,
     phonenumber,
     password
-  } = data
+  } = payload
 
   const checkUser = await prisma.user.findFirst({
     where: { OR: [{ email }, { username }] }

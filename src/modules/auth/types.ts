@@ -1,9 +1,9 @@
-export type LoginBody = {
+export type LoginPayload = {
   email: string
   password: string
 }
 
-export type RegisterBody = {
+export type RegisterPayload = {
   avatar?: string
   email: string
   firstname: string
@@ -13,7 +13,7 @@ export type RegisterBody = {
   password: string
 }
 
-export type ChangePasswordBody = {
+export type ChangePasswordPayload = {
   oldPassword: string
   newPassword: string
 }

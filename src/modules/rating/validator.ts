@@ -1,15 +1,12 @@
 import Joi from "joi"
 
 const createSchema = Joi.object().keys({
-  icon: Joi.string(),
-  parentId: Joi.string(),
-  value: Joi.string().required(),
+  value: Joi.number().min(0).max(5).required(),
+  organizationId: Joi.string().required()
 })
 
 const updateSchema = Joi.object().keys({
-  icon: Joi.string(),
-  parentId: Joi.string(),
-  value: Joi.string(),
+  value: Joi.number().min(0).max(5),
 })
 
 const querySchema = Joi.object().keys({

@@ -5,28 +5,28 @@ import httpStatus from "http-status"
 import operations from "./operations"
 import validator from "./validator"
 import catchAsync from "@/utils/catch-async"
+import type { CreatePayload, UpdatePayload } from "./types"
 
 export default {
-  find: catchAsync(async (req: Request, res: Response): Promise<void> => {
-    const result = await operations.find(req.query)
-
-    res.status(httpStatus.OK).send({ data: result })
-  }),
-
   findById: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const result = await operations.findById(req.params.id)
     res.status(httpStatus.OK).send({ data: result })
   }),
 
-  create: catchAsync(async (req: Request, res: Response): Promise<void> => {
-    const sanitizedPayload = await validator.createSchema.validateAsync(req.body)
-
-    const result = await operations.create(sanitizedPayload)
+  find: catchAsync(async (req: Request, res: Response): Promise<void> => {
+    const result = await operations.find(req.query)
     res.status(httpStatus.OK).send({ data: result })
   }),
 
+  create: catchAsync(async (req: Request, res: Response): Promise<void> => {
+    const sanitizedPayload: CreatePayload = await validator.createSchema.validateAsync(req.body)
+
+    const result = await operations.create(sanitizedPayload, res.locals.user)
+    res.status(httpStatus.CREATED).send({ data: result })
+  }),
+
   updateById: catchAsync(async (req: Request, res: Response): Promise<void> => {
-    const sanitizedPayload = await validator.updateSchema.validateAsync(req.body)
+    const sanitizedPayload: UpdatePayload = await validator.updateSchema.validateAsync(req.body)
 
     const result = await operations.updateById(req.params.id, sanitizedPayload)
     res.status(httpStatus.OK).send({ data: result })
@@ -35,5 +35,5 @@ export default {
   deleteById: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const result = await operations.deleteById(req.params.id)
     res.status(httpStatus.OK).send({ data: result })
-  })
+  }),
 }

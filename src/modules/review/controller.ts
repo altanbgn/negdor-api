@@ -21,7 +21,7 @@ export default {
   create: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const sanitizedPayload = await validator.createSchema.validateAsync(req.body)
 
-    const result = await operations.create(sanitizedPayload)
+    const result = await operations.create(sanitizedPayload, res.locals.user)
     res.status(httpStatus.OK).send({ data: result })
   }),
 
