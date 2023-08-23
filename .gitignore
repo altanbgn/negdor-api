@@ -7,3 +7,6 @@ build
 # Ignore environment variables:
 .env
 .env.development
+
+# Ignore docs
+docs
