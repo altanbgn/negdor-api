@@ -12,9 +12,6 @@ const createSchema = Joi.object().keys({
   logo: Joi.string(),
   banner: Joi.string(),
   images: Joi.array().items(Joi.string()),
-  categories: Joi.array().items(Joi.object().keys({
-    id: Joi.string()
-  })),
   tags: Joi.array().items(Joi.object().keys({
     id: Joi.string()
   }))

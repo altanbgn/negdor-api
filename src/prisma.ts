@@ -1,35 +1,76 @@
-import { PrismaClient } from "@prisma/client"
-import config from "@/utils/config"
+import httpStatus from "http-status"
+import { genSalt, hash, compare } from "bcryptjs"
 
-const initialPrisma = new PrismaClient()
-const extendedPrisma: any = global.prisma || initialPrisma.$extends({
-  result: {
-    organization: {
-      averageRating: {
-        needs: { id: true },
-        async compute(organization) {
-          const result = await initialPrisma.rating.aggregate({
-            where: { organizationId: organization.id },
-            _avg: { value: true }
+// Local
+import { PrismaClient } from "@prisma/client"
+import ApiError from "./utils/api-error"
+
+let prisma: typeof PrismaClient | any
+
+if (global.prisma) {
+  prisma = global.prisma
+} else {
+  const prismaInit = new PrismaClient()
+  const extendedPrisma = prismaInit.$extends({
+    model: {
+      user: {
+        async verifyPasswordByEmail(email: string, password: string) {
+          const foundUser = await prismaInit.user.findUnique({
+            where: { email }
           })
 
-          return `${result._avg.value}`
+          if (!foundUser) {
+            throw new ApiError(httpStatus.NOT_FOUND, "User not found!")
+          }
+
+          const checkPassword = await compare(password, foundUser.password)
+
+          if (!checkPassword) {
+            throw new ApiError(httpStatus.UNAUTHORIZED, "Wrong Password!")
+          }
+
+          return foundUser
+        },
+        async changePasswordById(id: string, oldPassword: string, newPassword: string) {
+          const foundUser = await prismaInit.user.findUnique({
+            where: { id }
+          })
+
+          if (!foundUser) {
+            throw new ApiError(httpStatus.NOT_FOUND, "User not found!")
+          }
+
+          const checkPassword = await compare(oldPassword, foundUser.password)
+
+          if (!checkPassword) {
+            throw new ApiError(httpStatus.UNAUTHORIZED, "Wrong Password!")
+          }
+
+          const salt = await genSalt(12)
+          const hashedPassword = await hash(newPassword, salt)
+
+          if (!hashedPassword) {
+            throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Something went wrong!")
+          }
+
+          return hashedPassword
+        }
+      }
+    },
+    result: {
+      user: {
+        password: {
+          compute() {
+            return "********"
+          }
         }
       }
     }
-  }
-})
+  })
 
-// Prevent multiple instances of Prisma Client in development
-declare const global: IPrismaGlobal
-
-// Add prisma to the NodeJS global type
-export interface IPrismaGlobal extends Global {
-  prisma: typeof extendedPrisma
+  prisma = extendedPrisma
 }
 
-const prisma = global.prisma || extendedPrisma
+if (process.env.NODE_ENV !== "production") global.prisma = prisma
 
-if (config.env === 'development') global.prisma = prisma
-
-export default extendedPrisma
+export default prisma;

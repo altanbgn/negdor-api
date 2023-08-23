@@ -2,21 +2,21 @@ import { UserRole, MemberRole } from "@prisma/client"
 
 // Local
 import prisma from "@/prisma"
-import { CreatePayload } from "../types"
+import { OrganizationCreatePayload } from "../types"
 
-export default async function (data: CreatePayload, user: any) {
+export default async function (data: OrganizationCreatePayload, user: any) {
   await prisma.user.update({
     where: { id: user.id },
     data: { role: UserRole.CLIENT }
   })
 
-  const { categories = [], tags, ...queryData } = data
+  const { tags, ...queryData } = data
 
   return await prisma.organization.create({
     data: {
       ...queryData,
-      categories: {
-        connect: [...categories]
+      metrics: {
+        create: {}
       },
       members: {
         create: [

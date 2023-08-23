@@ -5,7 +5,10 @@ import httpStatus from "http-status"
 import operations from "./operations"
 import validator from "./validator"
 import catchAsync from "@/utils/catch-async"
-import type { CreatePayload, UpdatePayload } from "./types"
+import type {
+  OrganizationCreatePayload,
+  OrganizationUpdatePayload
+} from "./types"
 
 export default {
   findById: catchAsync(async (req: Request, res: Response): Promise<void> => {
@@ -19,14 +22,14 @@ export default {
   }),
 
   create: catchAsync(async (req: Request, res: Response): Promise<void> => {
-    const sanitizedPayload: CreatePayload = await validator.createSchema.validateAsync(req.body)
+    const sanitizedPayload: OrganizationCreatePayload = await validator.createSchema.validateAsync(req.body)
 
     const result = await operations.create(sanitizedPayload, res.locals.user)
     res.status(httpStatus.CREATED).send({ data: result })
   }),
 
   updateById: catchAsync(async (req: Request, res: Response): Promise<void> => {
-    const sanitizedPayload: UpdatePayload = await validator.updateSchema.validateAsync(req.body)
+    const sanitizedPayload: OrganizationUpdatePayload = await validator.updateSchema.validateAsync(req.body)
 
     const result = await operations.updateById(req.params.id, sanitizedPayload)
     res.status(httpStatus.OK).send({ data: result })

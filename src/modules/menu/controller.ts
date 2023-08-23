@@ -22,19 +22,7 @@ export default {
   create: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const sanitizedPayload = await validator.createSchema.validateAsync(req.body)
 
-    const result = await operations.create(sanitizedPayload, res.locals.user)
-    res.status(httpStatus.OK).send({ data: result })
-  }),
-
-  updateById: catchAsync(async (req: Request, res: Response): Promise<void> => {
-    const sanitizedPayload = await validator.updateSchema.validateAsync(req.body)
-
-    const result = await operations.updateById(req.params.id, sanitizedPayload)
-    res.status(httpStatus.OK).send({ data: result })
-  }),
-
-  deleteById: catchAsync(async (req: Request, res: Response): Promise<void> => {
-    const result = await operations.deleteById(req.params.id)
+    const result = await operations.create(sanitizedPayload)
     res.status(httpStatus.OK).send({ data: result })
   })
 }

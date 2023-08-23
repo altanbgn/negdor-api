@@ -1,7 +1,7 @@
 import prisma from "@/prisma"
-import { CreatePayload } from "../types"
+import { ReviewCreatePayload } from "../types"
 
-export default async function (data: CreatePayload, user: any) {
+export default async function (data: ReviewCreatePayload, user: any) {
   const {
     title,
     body,

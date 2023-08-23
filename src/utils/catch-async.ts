@@ -1,5 +1,4 @@
-import { RequestHandler } from "express"
-import { Request, Response, NextFunction } from "express-serve-static-core"
+import { Request, Response, NextFunction, RequestHandler } from "express"
 
 export type CustomParamsDictionary = {
   [key: string]: any
@@ -15,7 +14,7 @@ const catchAsync =
   ) =>
   (
     req: Request<CustomParamsDictionary, any, any, any, Record<string, any>>,
-    res: Response<any, Record<string, any>, number>,
+    res: Response<any, Record<string, any>>,
     next: NextFunction
   ) => Promise.resolve(fn(req, res, next)).catch((err) => next(err))
 

@@ -9,8 +9,11 @@ export default async function (id: string) {
     throw new ApiError(httpStatus.BAD_REQUEST, "ID is not specified!")
   }
 
-  let result: any = await prisma.user.findUnique({
+  const result: any = await prisma.menu.findUnique({
     where: { id },
+    include: {
+      items: true
+    },
   })
 
   if (!result) {
