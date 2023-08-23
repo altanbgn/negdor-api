@@ -4,7 +4,7 @@ import prisma from "@/prisma"
 
 export default async function (id: string) {
   if (!id) {
-    throw new ApiError(httpStatus.BAD_REQUEST, "ID is not specified!")
+    throw new ApiError(httpStatus.BAD_REQUEST, "Invalid id")
   }
 
   const result: any = await prisma.review.findUnique({

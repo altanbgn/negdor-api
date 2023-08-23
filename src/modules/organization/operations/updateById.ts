@@ -7,7 +7,7 @@ import { OrganizationUpdatePayload } from "../types"
 
 export default async function (id: string, data: OrganizationUpdatePayload) {
   if (!id) {
-    throw new ApiError(httpStatus.BAD_REQUEST, "ID is not specified!")
+    throw new ApiError(httpStatus.BAD_REQUEST, "Invalid id")
   }
 
   const { categories = [], tags, ...queryData } = data

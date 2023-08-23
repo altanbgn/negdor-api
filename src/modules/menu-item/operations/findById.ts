@@ -3,15 +3,19 @@ import httpStatus from "http-status"
 // Local
 import prisma from "@/prisma"
 import ApiError from "@/utils/api-error"
-import { CategoryUpdatePayload } from "../types"
 
-export default async function (id: string, payload: CategoryUpdatePayload) {
+export default async function (id: string) {
   if (!id) {
     throw new ApiError(httpStatus.BAD_REQUEST, "Invalid id")
   }
 
-  return await prisma.category.update({
+  const result: any = await prisma.menuItem.findUnique({
     where: { id },
-    data: payload
   })
+
+  if (!result) {
+    throw new ApiError(httpStatus.NOT_FOUND, "Not found!")
+  }
+
+  return result
 }

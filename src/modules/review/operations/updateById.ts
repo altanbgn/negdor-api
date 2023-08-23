@@ -7,7 +7,7 @@ import prisma from "@/prisma"
 
 export default async function (id: string, data: ReviewUpdatePayload) {
   if (!id) {
-    throw new ApiError(httpStatus.BAD_REQUEST, "ID is not specified!")
+    throw new ApiError(httpStatus.BAD_REQUEST, "Invalid id")
   }
 
   return await prisma.review.update({

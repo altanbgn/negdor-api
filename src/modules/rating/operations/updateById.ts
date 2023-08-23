@@ -7,7 +7,7 @@ import { RatingUploadPayload } from "../types"
 
 export default async function (id: string, data: RatingUploadPayload) {
   if (!id) {
-    throw new ApiError(httpStatus.BAD_REQUEST, "ID is not specified!")
+    throw new ApiError(httpStatus.BAD_REQUEST, "Invalid id")
   }
 
   return await prisma.rating.update({

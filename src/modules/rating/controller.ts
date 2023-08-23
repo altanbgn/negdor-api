@@ -9,7 +9,9 @@ import { RatingCreatePayload, RatingUploadPayload } from "./types"
 
 export default {
   find: catchAsync(async (req: Request, res: Response): Promise<void> => {
-    const result = await operations.find(req.query)
+    const sanitizedQuery = await validator.querySchema.validateAsync(req.query)
+
+    const result = await operations.find(sanitizedQuery)
     res.status(httpStatus.OK).send({ data: result })
   }),
 

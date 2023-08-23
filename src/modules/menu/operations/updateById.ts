@@ -1,16 +1,16 @@
-import httpStatus from "http-status"
+import httpStatus from "http-status";
 
 // Local
 import prisma from "@/prisma"
 import ApiError from "@/utils/api-error"
-import { TagUpdatePayload } from "../types"
+import { UpdateMenuPayload } from "../types";
 
-export default async function (id: string, data: TagUpdatePayload) {
+export default async function(id: string, data: UpdateMenuPayload) {
   if (!id) {
     throw new ApiError(httpStatus.BAD_REQUEST, "Invalid id")
   }
 
-  return await prisma.tag.update({
+  return await prisma.menu.update({
     where: { id },
     data
   })

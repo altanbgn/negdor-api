@@ -7,15 +7,15 @@ export default async function (query: any) {
     perPage: parseInt(query?.perPage as string || "10"),
   }
 
-  let result = await prisma.rating.findMany({
+  let result = await prisma.menuItem.findMany({
     skip: (preparedQuery.page - 1) * preparedQuery.perPage,
-    take: preparedQuery.perPage,
+    take: preparedQuery.perPage
   })
 
   return {
     list: result,
     page: preparedQuery.page,
     perPage: preparedQuery.perPage,
-    total: await prisma.rating.count()
+    total: await prisma.menuItem.count()
   }
 }

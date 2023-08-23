@@ -10,7 +10,7 @@ export default async function (query: any) {
     perPage: parseInt(sanitizedQuery?.perPage as string || "10"),
   }
 
-  let result = await prisma.rating.findMany({
+  let result = await prisma.tag.findMany({
     skip: (preparedQuery.page - 1) * preparedQuery.perPage,
     take: preparedQuery.perPage,
   })
@@ -19,6 +19,6 @@ export default async function (query: any) {
     list: result,
     page: preparedQuery.page,
     perPage: preparedQuery.perPage,
-    total: await prisma.rating.count()
+    total: await prisma.tag.count()
   }
 }
