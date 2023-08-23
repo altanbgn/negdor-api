@@ -2,6 +2,7 @@ node_modules
 yarn.lock
 
 # Ignore artifacts:
+dist
 build
 
 # Ignore environment variables:

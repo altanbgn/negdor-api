@@ -11,7 +11,7 @@
   "scripts": {
     "start": "pm2 start ecosystem.config.json --no-daemon",
     "dev": "cross-env NODE_ENV=development nodemon src/index.ts",
-    "build": "tsc --project ./",
+    "build": "tsc --project tsconfig.json && tscpaths -p tsconfig.json -s ./src -o ./dist",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "prettier": "prettier --check **/*.ts",
@@ -60,6 +60,7 @@
     "prisma-docs-generator": "^0.8.0",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.2.0",
+    "tscpaths": "^0.0.9",
     "typescript": "^5.0.4"
   }
 }
