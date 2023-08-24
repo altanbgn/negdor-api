@@ -8,6 +8,7 @@ import catchAsync from "@/utils/catch-async"
 import { RatingCreatePayload, RatingUploadPayload } from "./types"
 
 export default {
+  /* `/rating/list` - GET */
   find: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const sanitizedQuery = await validator.querySchema.validateAsync(req.query)
 
@@ -15,11 +16,13 @@ export default {
     res.status(httpStatus.OK).send({ data: result })
   }),
 
+  /* `/rating/:id` - GET */
   findById: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const result = await operations.findById(req.params.id)
     res.status(httpStatus.OK).send({ data: result })
   }),
 
+  /* `/rating` - POST */
   create: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const sanitizedPayload: RatingCreatePayload = await validator.createSchema.validateAsync(req.body)
 
@@ -27,6 +30,7 @@ export default {
     res.status(httpStatus.OK).send({ data: result })
   }),
 
+  /* `/rating/:id` - PUT */
   updateById: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const sanitizedPayload: RatingUploadPayload = await validator.updateSchema.validateAsync(req.body)
 
@@ -34,6 +38,7 @@ export default {
     res.status(httpStatus.OK).send({ data: result })
   }),
 
+  /* `/rating/:id` - DELETE */
   deleteById: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const result = await operations.deleteById(req.params.id)
     res.status(httpStatus.OK).send({ data: result })

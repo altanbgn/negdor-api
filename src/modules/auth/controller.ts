@@ -8,6 +8,7 @@ import operations from "./operations"
 import catchAsync from "@/utils/catch-async"
 
 export default {
+  /* `/auth/login` - POST */
   login: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const sanitizedPayload: LoginPayload = await validator.loginSchema.validateAsync(req.body)
 
@@ -15,6 +16,7 @@ export default {
     res.status(httpStatus.CREATED).send({ data: result })
   }),
 
+  /* `/auth/register` - POST */
   register: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const sanitizedPayload: RegisterPayload = await validator.registerSchema.validateAsync(req.body)
 

@@ -16,6 +16,7 @@ const querySchema = Joi.object().keys({
   page: Joi.string(),
   perPage: Joi.string(),
   search: Joi.string().max(255),
+  parentId: Joi.string(),
 })
 
 export default {

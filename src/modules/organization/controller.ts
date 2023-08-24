@@ -11,16 +11,19 @@ import type {
 } from "./types"
 
 export default {
-  findById: catchAsync(async (req: Request, res: Response): Promise<void> => {
-    const result = await operations.findById(req.params.id)
-    res.status(httpStatus.OK).send({ data: result })
-  }),
-
+  /* `/organization/list` - GET */
   find: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const result = await operations.find(req.query)
     res.status(httpStatus.OK).send({ data: result })
   }),
 
+  /* `/organization/:id` - GET */
+  findById: catchAsync(async (req: Request, res: Response): Promise<void> => {
+    const result = await operations.findById(req.params.id)
+    res.status(httpStatus.OK).send({ data: result })
+  }),
+
+  /* `/organization` - POST */
   create: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const sanitizedPayload: OrganizationCreatePayload = await validator.createSchema.validateAsync(req.body)
 
@@ -28,6 +31,7 @@ export default {
     res.status(httpStatus.CREATED).send({ data: result })
   }),
 
+  /* `/organization/:id` - PUT */
   updateById: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const sanitizedPayload: OrganizationUpdatePayload = await validator.updateSchema.validateAsync(req.body)
 
@@ -35,6 +39,7 @@ export default {
     res.status(httpStatus.OK).send({ data: result })
   }),
 
+  /* `/organization/:id` - DELETE */
   deleteById: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const result = await operations.deleteById(req.params.id)
     res.status(httpStatus.OK).send({ data: result })

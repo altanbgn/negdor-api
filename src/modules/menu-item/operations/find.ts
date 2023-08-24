@@ -9,7 +9,10 @@ export default async function (query: any) {
 
   let result = await prisma.menuItem.findMany({
     skip: (preparedQuery.page - 1) * preparedQuery.perPage,
-    take: preparedQuery.perPage
+    take: preparedQuery.perPage,
+    body: {
+      search: query?.search || "",
+    },
   })
 
   return {

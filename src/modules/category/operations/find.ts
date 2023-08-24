@@ -7,14 +7,28 @@ export default async function (query: any) {
     perPage: parseInt(query?.perPage as string || "10"),
   }
 
-  let result = await prisma.category.findMany({
-    where: {
-      include: { children: true }
-    },
-    skip: (preparedQuery.page - 1) * preparedQuery.perPage,
-    take: preparedQuery.perPage,
+  let result = [];
 
-  })
+  if (query?.search && query?.search.length > 0) {
+    result = await prisma.category.findMany({
+      where: {
+        include: { children: true }
+      },
+      body: {
+        search: query.search,
+      },
+      skip: (preparedQuery.page - 1) * preparedQuery.perPage,
+      take: preparedQuery.perPage,
+    })
+  } else {
+    result = await prisma.category.findMany({
+      where: {
+        include: { children: true }
+      },
+      skip: (preparedQuery.page - 1) * preparedQuery.perPage,
+      take: preparedQuery.perPage,
+    })
+  }
 
   return {
     list: result,
