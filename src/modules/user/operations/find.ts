@@ -1,20 +1,20 @@
 import prisma from "@/prisma"
 
 export default async function (query: any) {
+  const page = parseInt(query?.page as string || "1");
+  const perPage = parseInt(query?.perPage as string || "10");
+
   const preparedQuery = {
-    page: parseInt(query?.page as string || "1"),
-    perPage: parseInt(query?.perPage as string || "10")
+    skip: (page - 1) * perPage,
+    take: perPage,
   }
 
-  const result = await prisma.user.findMany({
-    skip: (preparedQuery.page - 1) * preparedQuery.perPage,
-    take: preparedQuery.perPage,
-  })
+  const result = await prisma.user.findMany(preparedQuery)
 
   return {
     list: result,
-    page: preparedQuery.page,
-    perPage: preparedQuery.perPage,
+    page: page,
+    perPage: perPage,
     total: await prisma.user.count()
   }
 }

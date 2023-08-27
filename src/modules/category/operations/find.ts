@@ -2,38 +2,25 @@
 import prisma from "@/prisma"
 
 export default async function (query: any) {
-  let preparedQuery = {
-    page: parseInt(query?.page as string || "1"),
-    perPage: parseInt(query?.perPage as string || "10"),
-  }
+  let page = parseInt(query?.page as string || "1")
+  let perPage = parseInt(query?.perPage as string || "10")
 
-  let result = [];
+  let preparedQuery: any = {
+    include: { children: true },
+    skip: (page - 1) * perPage,
+    take: perPage,
+  }
 
   if (query?.search && query?.search.length > 0) {
-    result = await prisma.category.findMany({
-      where: {
-        include: { children: true }
-      },
-      body: {
-        search: query.search,
-      },
-      skip: (preparedQuery.page - 1) * preparedQuery.perPage,
-      take: preparedQuery.perPage,
-    })
-  } else {
-    result = await prisma.category.findMany({
-      where: {
-        include: { children: true }
-      },
-      skip: (preparedQuery.page - 1) * preparedQuery.perPage,
-      take: preparedQuery.perPage,
-    })
+    preparedQuery.body = { search: query.search }
   }
+
+  let result = await prisma.category.findMany(preparedQuery)
 
   return {
     list: result,
-    currentPage: preparedQuery.page,
-    perPage: preparedQuery.perPage,
+    currentPage: page,
+    perPage: perPage,
     total: await prisma.category.count()
   }
 }

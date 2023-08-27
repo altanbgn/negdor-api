@@ -1,24 +1,21 @@
 // Local
 import prisma from "@/prisma"
-import validator from "../validator"
 
 export default async function (query: any) {
-  const sanitizedQuery = await validator.querySchema.validateAsync(query)
+  const page = parseInt(query?.page as string || "1");
+  const perPage = parseInt(query?.perPage as string || "10");
 
   let preparedQuery = {
-    page: parseInt(sanitizedQuery?.page as string || "1"),
-    perPage: parseInt(sanitizedQuery?.perPage as string || "10"),
+    skip: (page - 1) * perPage,
+    take: perPage,
   }
 
-  let result = await prisma.tag.findMany({
-    skip: (preparedQuery.page - 1) * preparedQuery.perPage,
-    take: preparedQuery.perPage,
-  })
+  let result = await prisma.tag.findMany(preparedQuery)
 
   return {
     list: result,
-    page: preparedQuery.page,
-    perPage: preparedQuery.perPage,
+    page: page,
+    perPage: perPage,
     total: await prisma.tag.count()
   }
 }

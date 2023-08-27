@@ -64,8 +64,6 @@ model Organization {
 model Metrics {
   id             String       @id @unique @default(cuid())
   ratingAverage  Float        @default(0)
-  ratingCount    Int          @default(0)
-  reviewCount    Int          @default(0)
   organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId String       @unique
 
