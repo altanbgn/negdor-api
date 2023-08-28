@@ -10,9 +10,9 @@ export default async function(
   data: ChangePasswordPayload,
   user: any
 ) {
-  const verified = await prisma.user.verifyPasswordById(user.id, data.oldPassword)
+  const verifiedUser = await prisma.user.verifyPasswordById(user.id, data.oldPassword)
 
-  if (!verified) {
+  if (!verifiedUser) {
     throw new ApiError(httpStatus.UNAUTHORIZED, "Wrong Password!")
   }
 

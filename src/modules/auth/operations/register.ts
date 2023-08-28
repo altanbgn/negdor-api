@@ -1,15 +1,13 @@
 import httpStatus from "http-status"
 import { genSalt, hash } from "bcryptjs"
-import { sign } from "jsonwebtoken"
 import type { PrismaClientKnownRequestError } from "@prisma/client/runtime/library"
 
 // Locals
 import prisma from "@/prisma"
-import config from "@/utils/config"
 import ApiError from "@/utils/api-error"
 import { RegisterPayload } from "../types"
 
-export default async function register(payload: RegisterPayload): Promise<string> {
+export default async function register(payload: RegisterPayload): Promise<void> {
   const {
     email,
     firstname,
@@ -22,7 +20,7 @@ export default async function register(payload: RegisterPayload): Promise<string
   const salt = await genSalt(12)
   const hashedPassword = await hash(password, salt)
 
-  const user = await prisma.user.create({
+  await prisma.user.create({
     data: {
       email,
       firstname,
@@ -39,11 +37,5 @@ export default async function register(payload: RegisterPayload): Promise<string
     throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Something went wrong!")
   })
 
-  const token = sign(
-    user,
-    config.appSecret!,
-    { expiresIn: `${String(config.jwtExpiresIn)}m`, algorithm: "HS512" }
-  )
-
-  return token
+  return
 }

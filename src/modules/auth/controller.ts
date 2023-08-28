@@ -25,8 +25,8 @@ export default {
   register: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const sanitizedPayload: RegisterPayload = await validator.registerSchema.validateAsync(req.body)
 
-    const result = await operations.register(sanitizedPayload)
-    res.status(httpStatus.CREATED).send({ data: result })
+    await operations.register(sanitizedPayload)
+    res.status(httpStatus.CREATED).send({ message: "User registered successfully!" })
   }),
 
   /* `/auth/change-password` - POST */
@@ -48,8 +48,6 @@ export default {
   /* `/auth/recover-password` - POST */
   recoverPassword: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const sanitizedPayload = await validator.recoverPasswordSchema.validateAsync(req.body)
-
-    console.log(req.headers.authorization)
 
     await operations.recoverPassword(req.headers.authorization, sanitizedPayload)
     res.status(httpStatus.OK).send({ message: "Password reset successfully!" })

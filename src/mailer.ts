@@ -1,9 +1,10 @@
 import nodemailer from "nodemailer"
+import config from "@/utils/config"
 
 export default nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: "altanbagana605@gmail.com",
-    pass: "uqfjowrgukrniydm"
+    user: config.mailerUser,
+    pass: config.mailerUser
   },
 })
