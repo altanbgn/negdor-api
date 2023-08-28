@@ -17,7 +17,7 @@ export default async function (id: string, data: OrganizationUpdatePayload) {
     data: {
       ...queryData,
       categories: {
-        connect: [...categories]
+        set: categories.map((category: any) => ({ id: category.id }))
       }
     }
   })

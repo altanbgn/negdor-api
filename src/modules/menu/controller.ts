@@ -26,7 +26,7 @@ export default {
     const sanitizedPayload = await validator.createSchema.validateAsync(req.body)
 
     const result = await operations.create(sanitizedPayload)
-    res.status(httpStatus.OK).send({ data: result })
+    res.status(httpStatus.CREATED).send({ data: result })
   }),
 
   /* `/menu/:id` - PUT */

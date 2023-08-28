@@ -1,5 +1,9 @@
+// ========================
+// Configurations
+// ========================
+
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["fullTextIndex", "fullTextSearch"]
 }
 
@@ -13,6 +17,10 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+// ========================
+// Main Models
+// ========================
 
 model User {
   id          String   @id @unique @default(cuid())
@@ -45,39 +53,32 @@ model Organization {
   features         String[]
   logo             String? // Image
   banner           String? // Image
+  score            Float      @default(0)
   images           String[]
   categories       Category[]
   tags             Tag[]
+  menu             Menu[]
   members          Member[]
   reviews          Review[]
   ratings          Rating[]
-  metrics          Metrics?
   createdAt        DateTime   @default(now())
   updatedAt        DateTime   @default(now()) @updatedAt
-  Menu             Menu[]
 
   @@index([id, name])
 }
 
+// ========================
 // RELATIONS
-
-model Metrics {
-  id             String       @id @unique @default(cuid())
-  ratingAverage  Float        @default(0)
-  organization   Organization @relation(fields: [organizationId], references: [id])
-  organizationId String       @unique
-
-  @@index([id, organizationId])
-}
+// ========================
 
 model Review {
   id             String       @id @unique @default(cuid())
   title          String
   body           String
   images         String[]
-  organization   Organization @relation(fields: [organizationId], references: [id])
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   organizationId String
-  createdUser    User         @relation(fields: [createdUserId], references: [id])
+  createdUser    User         @relation(fields: [createdUserId], references: [id], onDelete: Cascade)
   createdUserId  String
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @default(now()) @updatedAt
@@ -88,13 +89,14 @@ model Review {
 model Rating {
   id             String       @id @unique @default(cuid())
   value          Int
-  organization   Organization @relation(fields: [organizationId], references: [id])
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   organizationId String
-  createdUser    User         @relation(fields: [createdUserId], references: [id])
+  createdUser    User         @relation(fields: [createdUserId], references: [id], onDelete: Cascade)
   createdUserId  String
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @default(now()) @updatedAt
 
+  @@unique([organizationId, createdUserId])
   @@index([id, organizationId])
 }
 
@@ -104,7 +106,7 @@ model Category {
   value         String
   organizations Organization[]
   children      Category[]     @relation("children")
-  parent        Category?      @relation("children", fields: [parentId], references: [id])
+  parent        Category?      @relation("children", fields: [parentId], references: [id], onDelete: Restrict)
   parentId      String?
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @default(now()) @updatedAt
@@ -118,7 +120,7 @@ model Tag {
   value         String         @unique
   organizations Organization[]
   children      Tag[]          @relation("children")
-  parent        Tag?           @relation("children", fields: [parentId], references: [id])
+  parent        Tag?           @relation("children", fields: [parentId], references: [id], onDelete: Restrict)
   parentId      String?
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @default(now()) @updatedAt
@@ -130,7 +132,7 @@ model Menu {
   id             String       @id @unique @default(cuid())
   title          String
   description    String
-  organization   Organization @relation(fields: [organizationId], references: [id])
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
   organizationId String
   items          MenuItem[]
 }
@@ -141,15 +143,15 @@ model MenuItem {
   description String
   price       Float
   image       String
-  menu        Menu   @relation(fields: [menuId], references: [id])
+  menu        Menu   @relation(fields: [menuId], references: [id], onDelete: Restrict)
   menuId      String
 }
 
 model Member {
   id             String        @id @unique @default(cuid())
-  user           User?         @relation(fields: [userId], references: [id])
+  user           User?         @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId         String?
-  organization   Organization? @relation(fields: [organizationId], references: [id])
+  organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   organizationId String?
   role           MemberRole    @default(MEMBER)
   createdAt      DateTime      @default(now())
@@ -157,6 +159,10 @@ model Member {
 
   @@index([id, userId, organizationId])
 }
+
+// ========================
+// Enums
+// ========================
 
 enum UserRole {
   USER

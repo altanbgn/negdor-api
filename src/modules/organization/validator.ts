@@ -37,7 +37,7 @@ const updateSchema = Joi.object().keys({
   }))
 })
 
-const querySchema = Joi.object().keys({
+const findQuerySchema = Joi.object().keys({
   page: Joi.string(),
   perPage: Joi.string(),
   search: Joi.string().max(255),
@@ -46,5 +46,5 @@ const querySchema = Joi.object().keys({
 export default {
   createSchema,
   updateSchema,
-  querySchema
+  findQuerySchema
 }

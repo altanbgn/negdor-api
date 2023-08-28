@@ -2,8 +2,6 @@ type Connection = {
   id: string
 }
 
-
-
 export type OrganizationCreatePayload = {
   name: string
   shortDescription: string

@@ -1,6 +1,7 @@
+import httpStatus from "http-status"
 import { genSalt, hash } from "bcryptjs"
 import { sign } from "jsonwebtoken"
-import httpStatus from "http-status"
+import type { PrismaClientKnownRequestError } from "@prisma/client/runtime/library"
 
 // Locals
 import prisma from "@/prisma"
@@ -18,14 +19,6 @@ export default async function register(payload: RegisterPayload): Promise<string
     password
   } = payload
 
-  const checkUser = await prisma.user.findFirst({
-    where: { OR: [{ email }, { username }] }
-  })
-
-  if (checkUser) {
-    throw new ApiError(httpStatus.BAD_REQUEST, "User with this email already exists!")
-  }
-
   const salt = await genSalt(12)
   const hashedPassword = await hash(password, salt)
 
@@ -38,11 +31,17 @@ export default async function register(payload: RegisterPayload): Promise<string
       phonenumber,
       password: hashedPassword
     }
+  }).catch((error: PrismaClientKnownRequestError) => {
+    if (error.code === "P2002") {
+      throw new ApiError(httpStatus.BAD_REQUEST, "User with this email already exists!")
+    }
+
+    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Something went wrong!")
   })
 
   const token = sign(
     user,
-    config.appSecret,
+    config.appSecret!,
     { expiresIn: `${String(config.jwtExpiresIn)}m`, algorithm: "HS512" }
   )
 

@@ -11,8 +11,6 @@ export default async function (id: string) {
 
   return await prisma.category.findUnique({
     where: { id },
-    include: {
-      children: true
-    }
+    include: { children: true }
   })
 }

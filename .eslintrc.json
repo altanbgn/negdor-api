@@ -2,16 +2,24 @@
   "env": {
     "node": true
   },
-  "extends": ["airbnb-base", "plugin:security/recommended", "plugin:prettier/recommended"],
+  "extends": [
+    "airbnb-base",
+    "airbnb-typescript/base",
+    "plugin:security/recommended",
+    "plugin:prettier/recommended"
+  ],
   "plugins": ["security", "prettier"],
   "parserOptions": {
-    "ecmaVersion": 2018
+    "project": "./tsconfig.json",
+    "ecmaVersion": 2020
   },
   "rules": {
     "no-console": "off",
     "func-names": "off",
     "no-underscore-dangle": "off",
     "consistent-return": "off",
-    "security/detect-object-injection": "off"
+    "security/detect-object-injection": "off",
+    "import/no-unresolved": "off",
+    "import/extensions": "off"
   }
 }

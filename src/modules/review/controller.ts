@@ -9,7 +9,7 @@ import catchAsync from "@/utils/catch-async"
 export default {
   /* `/review/list` - GET */
   find: catchAsync(async (req: Request, res: Response): Promise<void> => {
-    const sanitizedQuery = await validator.querySchema.validateAsync(req.query)
+    const sanitizedQuery = await validator.findQuerySchema.validateAsync(req.query)
 
     const result = await operations.find(sanitizedQuery)
     res.status(httpStatus.OK).send({ data: result })
@@ -26,7 +26,7 @@ export default {
     const sanitizedPayload = await validator.createSchema.validateAsync(req.body)
 
     const result = await operations.create(sanitizedPayload, res.locals.user)
-    res.status(httpStatus.OK).send({ data: result })
+    res.status(httpStatus.CREATED).send({ data: result })
   }),
 
   /* `/review/:id` - PUT */

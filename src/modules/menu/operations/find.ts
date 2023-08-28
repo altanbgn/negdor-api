@@ -11,13 +11,13 @@ export default async function (query: any) {
   }
 
   if (query?.search && query?.search.length > 0) {
-    preparedQuery.body = { search: query.search }
+    preparedQuery.where = {
+      title: { search: query.search }
+    }
   }
 
-  let result = await prisma.menu.findMany(preparedQuery)
-
   return {
-    list: result,
+    list: await prisma.menu.findMany(preparedQuery),
     page: page,
     perPage: perPage,
     total: await prisma.menu.count()

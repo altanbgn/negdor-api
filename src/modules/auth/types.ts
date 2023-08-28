@@ -17,3 +17,7 @@ export type ChangePasswordPayload = {
   oldPassword: string
   newPassword: string
 }
+
+export type ForgotPasswordPayload = { email: string }
+export type RecoverPasswordQuery = { token: string }
+export type RecoverPasswordPayload = { password: string }

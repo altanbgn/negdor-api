@@ -23,7 +23,7 @@ export const errorConverter: ErrorRequestHandler = (err, _req: Request, _res: Re
 
 export const errorHandler: ErrorRequestHandler = (err, _req: Request, res: Response, _next: NextFunction) => {
   let { statusCode, message } = err
-  if (config.env === 'production' && !err.isOperational) {
+  if (config.env === "production" && !err.isOperational) {
     statusCode = httpStatus.INTERNAL_SERVER_ERROR
     message = httpStatus[httpStatus.INTERNAL_SERVER_ERROR]
   }
@@ -33,10 +33,10 @@ export const errorHandler: ErrorRequestHandler = (err, _req: Request, res: Respo
   const response = {
     code: statusCode,
     message,
-    ...(config.env === 'development' && { stack: err.stack })
+    ...(config.env === "development" && { stack: err.stack })
   }
 
-  if (config.env === 'development') {
+  if (config.env === "development") {
     logger.error(err)
   }
 

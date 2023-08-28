@@ -19,17 +19,17 @@ app.use(helmet())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(compression())
-app.use(cors({
-  credentials: true,
-  origin: config.env === "development" ? "*" : [
-    config.appUrl || ""
-  ]
-}))
+app.use(
+  cors({
+    credentials: true,
+    origin: config.env === "development" ? "*" : [config.appUrl || ""]
+  })
+)
 
 app.use(`/${config.apiPrefix}`, routes)
 
 app.use((_req, _res, next) => {
-  next(new ApiError(httpStatus.NOT_FOUND, 'Not found'))
+  next(new ApiError(httpStatus.NOT_FOUND, "Not found"))
 })
 
 app.use(errorConverter)

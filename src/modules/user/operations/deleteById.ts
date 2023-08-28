@@ -9,7 +9,5 @@ export default async function(id: string) {
     throw new ApiError(httpStatus.BAD_REQUEST, "Invalid id")
   }
 
-  return await prisma.user.delete({
-    where: { id }
-  })
+  return await prisma.user.delete({ where: { id } })
 }

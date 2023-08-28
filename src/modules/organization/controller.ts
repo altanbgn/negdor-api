@@ -13,7 +13,7 @@ import type {
 export default {
   /* `/organization/list` - GET */
   find: catchAsync(async (req: Request, res: Response): Promise<void> => {
-    const sanitizedQuery = await validator.querySchema.validateAsync(req.query)
+    const sanitizedQuery = await validator.findQuerySchema.validateAsync(req.query)
     const result = await operations.find(sanitizedQuery)
     res.status(httpStatus.OK).send({ data: result })
   }),

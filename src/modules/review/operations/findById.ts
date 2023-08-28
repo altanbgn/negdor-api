@@ -10,8 +10,26 @@ export default async function (id: string) {
   const result: any = await prisma.review.findUnique({
     where: { id },
     include: {
-      createdUser: true,
-      organization: true
+      createdUser: {
+        select: {
+          avatar: true,
+          firstname: true,
+          username: true,
+          lastname: true,
+          role: true,
+        }
+      },
+      organization: {
+        select: {
+          name: true,
+          shortDescription: true,
+          fullDescription: true,
+          director: true,
+          emails: true,
+          phonenumbers: true,
+          locations: true,
+        }
+      }
     }
   })
 

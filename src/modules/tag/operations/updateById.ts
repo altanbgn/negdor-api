@@ -10,8 +10,5 @@ export default async function (id: string, data: TagUpdatePayload) {
     throw new ApiError(httpStatus.BAD_REQUEST, "Invalid id")
   }
 
-  return await prisma.tag.update({
-    where: { id },
-    data
-  })
+  return await prisma.tag.update({ where: { id }, data })
 }

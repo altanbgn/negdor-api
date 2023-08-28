@@ -6,19 +6,26 @@ export default async function (query: any) {
   let perPage = parseInt(query?.perPage as string || "10")
 
   let preparedQuery: any = {
-    include: { children: true },
     skip: (page - 1) * perPage,
     take: perPage,
+    include: { children: true },
+  }
+
+  if (query?.parentId && query?.parentId.length > 0) {
+    preparedQuery.where = {
+      parentId: query.parentId
+    }
   }
 
   if (query?.search && query?.search.length > 0) {
-    preparedQuery.body = { search: query.search }
+    preparedQuery.where = {
+      ...preparedQuery,
+      value: { search: query.search }
+    }
   }
 
-  let result = await prisma.category.findMany(preparedQuery)
-
   return {
-    list: result,
+    list: await prisma.category.findMany(preparedQuery),
     currentPage: page,
     perPage: perPage,
     total: await prisma.category.count()

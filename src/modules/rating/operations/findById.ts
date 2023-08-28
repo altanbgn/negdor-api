@@ -12,7 +12,15 @@ export default async function (id: string) {
   return await prisma.rating.findUnique({
     where: { id },
     include: {
-      createdUser: true,
+      createdUser: {
+        select: {
+          avatar: true,
+          firstname: true,
+          username: true,
+          lastname: true,
+          role: true,
+        }
+      },
       organization: true
     }
   })

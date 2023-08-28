@@ -1,9 +1,9 @@
-import httpStatus from "http-status";
+import httpStatus from "http-status"
 
 // Local
 import prisma from "@/prisma"
 import ApiError from "@/utils/api-error"
-import { UpdateMenuPayload } from "../types";
+import { UpdateMenuPayload } from "../types"
 
 export default async function(id: string, data: UpdateMenuPayload) {
   if (!id) {

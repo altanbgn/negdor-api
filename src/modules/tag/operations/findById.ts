@@ -10,6 +10,6 @@ export default async function (id: string) {
   }
 
   return await prisma.tag.findUnique({
-    where: { id },
+    where: { id }
   })
 }

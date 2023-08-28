@@ -15,9 +15,6 @@ export default async function (data: OrganizationCreatePayload, user: any) {
   return await prisma.organization.create({
     data: {
       ...queryData,
-      metrics: {
-        create: {}
-      },
       members: {
         create: [
           {

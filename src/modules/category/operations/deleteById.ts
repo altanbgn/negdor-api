@@ -9,16 +9,18 @@ export default async function (id: string) {
     throw new ApiError(httpStatus.BAD_REQUEST, "Invalid id")
   }
 
-  const foundResult = prisma.category.count({
+  const foundResult = await prisma.category.findFirst({
     where: { id },
     include: {
       _count: {
-        children: true
+        select: {
+          children: true
+        }
       }
     }
   })
 
-  if (foundResult._count !== 0) {
+  if (foundResult?._count.children !== 0) {
     throw new ApiError(httpStatus.CONFLICT, "Data is being used. (Has children or related to some data)")
   }
 
