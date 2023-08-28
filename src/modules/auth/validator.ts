@@ -2,7 +2,7 @@ import Joi from "joi"
 
 const loginSchema = Joi.object().keys({
   email: Joi.string().required(),
-  password: Joi.string().required()
+  password: Joi.string().required().min(8).max(50)
 })
 
 const registerSchema = Joi.object().keys({
@@ -12,12 +12,12 @@ const registerSchema = Joi.object().keys({
   lastname: Joi.string().required(),
   username: Joi.string().required(),
   phonenumber: Joi.string(),
-  password: Joi.string().required()
+  password: Joi.string().required().min(8).max(50)
 })
 
 const changePasswordSchema = Joi.object().keys({
-  oldPassword: Joi.string().required(),
-  newPassword: Joi.string().required()
+  oldPassword: Joi.string().required().min(8).max(50),
+  newPassword: Joi.string().required().min(8).max(50)
 })
 
 const forgotPasswordSchema = Joi.object().keys({
@@ -25,7 +25,7 @@ const forgotPasswordSchema = Joi.object().keys({
 })
 
 const recoverPasswordSchema = Joi.object().keys({
-  password: Joi.string().required()
+  password: Joi.string().required().min(8).max(50)
 })
 
 const recoverPasswordQuerySchema = Joi.object().keys({

@@ -1,5 +1,6 @@
 import httpStatus from "http-status"
 import { genSalt, hash } from "bcryptjs"
+import { User } from "@prisma/client"
 
 // Local
 import prisma from "@/prisma"
@@ -8,7 +9,7 @@ import type { ChangePasswordPayload } from "../types"
 
 export default async function(
   data: ChangePasswordPayload,
-  user: any
+  user: User
 ) {
   const verifiedUser = await prisma.user.verifyPasswordById(user.id, data.oldPassword)
 
