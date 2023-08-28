@@ -18,7 +18,7 @@ export default async function (data: ForgotPasswordPayload): Promise<void> {
     subject: "Negdor - Forgot Password",
     html: `
       <p>
-        Click <a href="${config.appUrl}/${config.apiPrefix}/auth/recover-password?token=${token}">here</a> to recover your password.
+        Click <a href="${config.appUrl}/auth/recover-password?token=${token}">here</a> to recover your password.
       </p>
     `
   })

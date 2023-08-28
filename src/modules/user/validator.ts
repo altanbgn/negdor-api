@@ -17,18 +17,14 @@ const updateSchema = Joi.object().keys({
   username: Joi.string()
 })
 
-const updatePasswordByIdInputSchema = Joi.object().keys({
-  newPassword: Joi.string().required()
-})
-
-const updatePasswordMeInputSchema = Joi.object().keys({
-  oldPassword: Joi.string().required(),
-  newPassword: Joi.string().required()
+const findQuerySchema = Joi.object().keys({
+  page: Joi.string(),
+  perPage: Joi.string(),
+  search: Joi.string().max(255),
 })
 
 export default {
   createSchema,
   updateSchema,
-  updatePasswordByIdInputSchema,
-  updatePasswordMeInputSchema
+  findQuerySchema
 }

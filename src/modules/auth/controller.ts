@@ -48,9 +48,10 @@ export default {
   /* `/auth/recover-password` - POST */
   recoverPassword: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const sanitizedPayload = await validator.recoverPasswordSchema.validateAsync(req.body)
-    const sanitizedQuery = await validator.recoverPasswordQuerySchema.validateAsync(req.query)
 
-    await operations.recoverPassword(sanitizedQuery, sanitizedPayload)
+    console.log(req.headers.authorization)
+
+    await operations.recoverPassword(req.headers.authorization, sanitizedPayload)
     res.status(httpStatus.OK).send({ message: "Password reset successfully!" })
   })
 }
