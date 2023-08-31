@@ -21,7 +21,7 @@ export default async function login(payload: LoginPayload): Promise<string> {
       phonenumber: verifiedUser.phonenumber,
       role: verifiedUser.role,
       createdAt: verifiedUser.createdAt,
-      updatedAt: verifiedUser.updatedAt,
+      updatedAt: verifiedUser.updatedAt
     },
     config.appSecret,
     { expiresIn: `${String(config.jwtExpiresIn)}m`, algorithm: "HS512" }

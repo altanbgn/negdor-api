@@ -3,4 +3,4 @@ export type RatingCreatePayload = {
   organizationId: string
 }
 
-export type RatingUploadPayload = Partial<Omit<RatingCreatePayload, 'organizationId'>>
+export type RatingUploadPayload = Partial<Omit<RatingCreatePayload, "organizationId">>

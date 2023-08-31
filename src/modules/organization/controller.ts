@@ -5,10 +5,7 @@ import httpStatus from "http-status"
 import operations from "./operations"
 import validator from "./validator"
 import catchAsync from "@/utils/catch-async"
-import type {
-  OrganizationCreatePayload,
-  OrganizationUpdatePayload
-} from "./types"
+import type { OrganizationCreatePayload, OrganizationUpdatePayload } from "./types"
 
 export default {
   /* `/organization/list` - GET */
@@ -44,5 +41,5 @@ export default {
   deleteById: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const result = await operations.deleteById(req.params.id)
     res.status(httpStatus.OK).send({ data: result })
-  }),
+  })
 }

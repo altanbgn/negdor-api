@@ -12,7 +12,7 @@ export default async function (data: OrganizationCreatePayload, user: any) {
 
   const { tags, ...queryData } = data
 
-  return await prisma.organization.create({
+  const result = await prisma.organization.create({
     data: {
       ...queryData,
       members: {
@@ -25,4 +25,6 @@ export default async function (data: OrganizationCreatePayload, user: any) {
       }
     }
   })
+
+  return result
 }

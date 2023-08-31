@@ -1,10 +1,11 @@
 import prisma from "@/prisma"
 
-export default async function (query: any) {
+export default async function(query: any) {
   const page = parseInt(query?.page as string || "1")
   const perPage = parseInt(query?.perPage as string || "10")
+  const userId = query?.userId as string || null
 
-  let preparedQuery = {
+  let preparedQuery: any = {
     skip: (page - 1) * perPage,
     take: perPage,
     include: {
@@ -29,6 +30,10 @@ export default async function (query: any) {
         }
       }
     }
+  }
+
+  if (query?.userId && query?.userId.length > 0) {
+    preparedQuery.where = { createdUserId: userId }
   }
 
   return {

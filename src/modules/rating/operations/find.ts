@@ -27,6 +27,13 @@ export default async function(query: any) {
     }
   }
 
+  if (query?.userId && query?.userId.length > 0) {
+    preparedQuery.where = {
+      ...preparedQuery.where,
+      createdUserId: query.userId
+    }
+  }
+
   return {
     list: await prisma.rating.findMany(preparedQuery),
     page: page,

@@ -6,13 +6,14 @@ const createSchema = Joi.object().keys({
 })
 
 const updateSchema = Joi.object().keys({
-  value: Joi.number().min(0).max(5),
+  value: Joi.number().min(0).max(5)
 })
 
 const findQuerySchema = Joi.object().keys({
   page: Joi.string(),
   perPage: Joi.string(),
   search: Joi.string().max(255),
+  userId: Joi.string()
 })
 
 export default {

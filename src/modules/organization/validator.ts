@@ -12,9 +12,7 @@ const createSchema = Joi.object().keys({
   logo: Joi.string(),
   banner: Joi.string(),
   images: Joi.array().items(Joi.string()),
-  tags: Joi.array().items(Joi.object().keys({
-    id: Joi.string()
-  }))
+  tags: Joi.array().items(Joi.object().keys({ id: Joi.string() }))
 })
 
 const updateSchema = Joi.object().keys({
@@ -29,18 +27,14 @@ const updateSchema = Joi.object().keys({
   logo: Joi.string(),
   banner: Joi.string(),
   images: Joi.array().items(Joi.string()),
-  categories: Joi.array().items(Joi.object().keys({
-    id: Joi.string()
-  })),
-  tags: Joi.array().items(Joi.object().keys({
-    id: Joi.string()
-  }))
+  categories: Joi.array().items(Joi.object().keys({ id: Joi.string() })),
+  tags: Joi.array().items(Joi.object().keys({ id: Joi.string() }))
 })
 
 const findQuerySchema = Joi.object().keys({
   page: Joi.string(),
   perPage: Joi.string(),
-  search: Joi.string().max(255),
+  search: Joi.string().max(255)
 })
 
 export default {

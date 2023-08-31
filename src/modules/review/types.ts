@@ -1,7 +1,7 @@
 export type ReviewCreatePayload = {
-  title: string,
+  title: string
   body: string
   organizationId: string
 }
 
-export type ReviewUpdatePayload = Partial<Omit<ReviewCreatePayload, 'organizationId'>>
+export type ReviewUpdatePayload = Partial<Omit<ReviewCreatePayload, "organizationId">>
