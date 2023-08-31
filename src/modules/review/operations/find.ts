@@ -24,6 +24,7 @@ export default async function(query: Query) {
   const preparedQuery = {
     skip: (page - 1) * perPage,
     take: perPage,
+    where: whereConditions,
     include: {
       createdUser: {
         select: {
