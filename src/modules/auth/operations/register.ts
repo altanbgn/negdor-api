@@ -33,5 +33,7 @@ export default async function register(payload: RegisterPayload): Promise<void> 
     if (error.code === "P2002") {
       throw new ApiError(httpStatus.BAD_REQUEST, "User with this email already exists!")
     }
+
+    throw error
   })
 }
