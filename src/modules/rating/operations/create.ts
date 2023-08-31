@@ -9,7 +9,7 @@ import { RatingCreatePayload } from "../types"
 export default async function(data: RatingCreatePayload, user: any) {
   const { value, organizationId } = data
 
-  return await prisma.$transaction(async function(tx: any) {
+  return await prisma.$transaction(async function(tx) {
     const createdRating = await tx.rating.create({
       data: {
         value,

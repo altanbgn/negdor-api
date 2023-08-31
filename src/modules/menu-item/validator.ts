@@ -4,14 +4,16 @@ const createSchema = Joi.object({
   title: Joi.string().required(),
   description: Joi.string().required(),
   price: Joi.number().required(),
-  image: Joi.string().required()
+  image: Joi.string().required(),
+  menuId: Joi.string()
 })
 
 const updateSchema = Joi.object({
   title: Joi.string(),
   description: Joi.string(),
   price: Joi.number(),
-  image: Joi.string()
+  image: Joi.string(),
+  menuId: Joi.string()
 })
 
 const findQuerySchema = Joi.object({

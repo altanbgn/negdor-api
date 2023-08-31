@@ -2,11 +2,7 @@ import prisma from "@/prisma"
 import { ReviewCreatePayload } from "../types"
 
 export default async function (data: ReviewCreatePayload, user: any) {
-  const {
-    title,
-    body,
-    organizationId
-  } = data
+  const { title, body, organizationId } = data
 
   return await prisma.review.create({
     data: {

@@ -1,19 +1,30 @@
 // Local
 import prisma from "@/prisma"
 
-export default async function (query: any) {
-  let page = parseInt(query?.page as string || "1")
-  let perPage = parseInt(query?.perPage as string || "10")
+type Query = {
+  page?: string
+  perPage?: string
+  search?: string
+  organizationId: string
+}
 
-  let preparedQuery: any = {
-    skip: (page - 1) * perPage,
-    take: perPage,
-  }
+export default async function (query: Query) {
+  const page = parseInt(query?.page as string || "1")
+  const perPage = parseInt(query?.perPage as string || "10")
+  const whereConditions: any = {}
 
   if (query?.search && query?.search.length > 0) {
-    preparedQuery.where = {
-      title: { search: query.search }
-    }
+    whereConditions.title = { search: query.search }
+  }
+
+  if (query?.organizationId && query?.organizationId.length > 0) {
+    whereConditions.organizationId = query.organizationId
+  }
+
+  const preparedQuery = {
+    skip: (page - 1) * perPage,
+    take: perPage,
+    where: whereConditions,
   }
 
   return {
