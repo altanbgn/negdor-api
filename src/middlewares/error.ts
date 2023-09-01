@@ -9,20 +9,24 @@ import ApiError from "@/utils/api-error"
 
 export const errorConverter: ErrorRequestHandler = (err, _req: Request, _res: Response, next: NextFunction) => {
   let error = err
+
   if (!(error instanceof ApiError)) {
     const statusCode =
-      error.statusCode || error instanceof Prisma.PrismaClientKnownRequestError
+      error.statusCode ||
+      error instanceof Prisma.PrismaClientKnownRequestError
         ? httpStatus.BAD_REQUEST
         : httpStatus.INTERNAL_SERVER_ERROR
 
     const message = error?.meta?.cause || error.message || httpStatus[statusCode]
     error = new ApiError(statusCode, message, false, err.stack)
   }
+
   next(error)
 }
 
 export const errorHandler: ErrorRequestHandler = (err, _req: Request, res: Response, _next: NextFunction) => {
   let { statusCode, message } = err
+
   if (config.env === "production" && !err.isOperational) {
     statusCode = httpStatus.INTERNAL_SERVER_ERROR
     message = httpStatus[httpStatus.INTERNAL_SERVER_ERROR]

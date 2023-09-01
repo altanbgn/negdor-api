@@ -10,7 +10,21 @@ export default async function(id: string) {
     throw new ApiError(httpStatus.BAD_REQUEST, "Invalid id")
   }
 
-  let result: any = await prisma.user.findUnique({ where: { id } })
+  return await prisma.user.findUnique({
+    where: { id },
+    select: {
+      id: true,
+      avatar: true,
+      firstname: true,
+      lastname: true,
+      username: true,
+      email: true,
+      phonenumber: true,
+      createdAt: true,
+      updatedAt: true,
+      role: true
+    }
+  })
     .catch((error: PrismaClientKnownRequestError) => {
       if (error.code === "P2002") {
         throw new ApiError(httpStatus.BAD_REQUEST, "Can't create another rating for this org")
@@ -18,6 +32,4 @@ export default async function(id: string) {
 
       throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Something went wrong!")
     })
-
-  return result
 }
