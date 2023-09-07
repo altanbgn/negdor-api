@@ -48,8 +48,6 @@ export default {
 
   /* `/user/me` - GET */
   findMe: catchAsync(async (_req: Request, res: Response): Promise<void> => {
-    console.log(res.locals.user)
-
     const result = await operations.findById(res.locals.user.id)
     res.status(httpStatus.OK).send({ data: result })
   }),

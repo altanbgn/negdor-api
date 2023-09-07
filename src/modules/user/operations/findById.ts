@@ -20,6 +20,7 @@ export default async function(id: string) {
       username: true,
       email: true,
       phonenumber: true,
+      organizations: true,
       createdAt: true,
       updatedAt: true,
       role: true
