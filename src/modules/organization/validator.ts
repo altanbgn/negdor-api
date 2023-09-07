@@ -23,32 +23,18 @@ const createSchema = Joi.object().keys({
     .required()
     .error(new ApiError(BAD_REQUEST, "Director is required")),
 
-  emails: Joi
-    .array()
-    .items(Joi.string()),
-
-  phonenumbers: Joi
-    .array()
-    .items(Joi.string()),
-
-  locations: Joi
-    .array()
-    .items(Joi.string()),
-
-  features: Joi
-    .array()
-    .items(Joi.string()),
+  emails: Joi.array().items(Joi.string()),
+  phonenumbers: Joi.array().items(Joi.string()),
+  locations: Joi.array().items(Joi.string()),
+  features: Joi.array().items(Joi.string()),
 
   logo: Joi.string(),
   banner: Joi.string(),
 
-  images: Joi
-    .array()
-    .items(Joi.string()),
+  images: Joi.array().items(Joi.string()),
+  categories: Joi.array().items(Joi.string()),
 
-  tags: Joi
-    .array()
-    .items(Joi.object().keys({ id: Joi.string() }))
+  tags: Joi.array().items(Joi.object().keys({ id: Joi.string() }))
 })
 
 const updateSchema = Joi.object().keys({
@@ -56,14 +42,18 @@ const updateSchema = Joi.object().keys({
   shortDescription: Joi.string(),
   fullDescription: Joi.string(),
   director: Joi.string(),
+
   emails: Joi.array().items(Joi.string()),
   phonenumbers: Joi.array().items(Joi.string()),
   locations: Joi.array().items(Joi.string()),
   features: Joi.array().items(Joi.string()),
+
   logo: Joi.string(),
   banner: Joi.string(),
+
   images: Joi.array().items(Joi.string()),
-  categories: Joi.array().items(Joi.object().keys({ id: Joi.string() })),
+  categories: Joi.array().items(Joi.string()),
+
   tags: Joi.array().items(Joi.object().keys({ id: Joi.string() }))
 })
 

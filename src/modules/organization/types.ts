@@ -1,4 +1,4 @@
-type Connection = {
+export type Connection = {
   id: string
 }
 
@@ -13,7 +13,8 @@ export type OrganizationCreatePayload = {
   logo?: string
   banner?: string
   images?: Array<string>
-  tags?: Array<Connection>
+  categories?: Array<string>
+  tags?: Array<string>
 }
 
 export type OrganizationUpdatePayload = Partial<OrganizationCreatePayload> & { categories?: Array<string> }

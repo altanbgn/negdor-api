@@ -10,11 +10,14 @@ export default async function (data: OrganizationCreatePayload, user: any) {
     data: { role: UserRole.CLIENT }
   })
 
-  const { tags, ...queryData } = data
+  const { categories = [], tags, ...queryData } = data
 
   const result = await prisma.organization.create({
     data: {
       ...queryData,
+      categories: {
+        connect: categories.map((categoryId: string) => ({ id: categoryId }))
+      },
       members: {
         create: [
           {

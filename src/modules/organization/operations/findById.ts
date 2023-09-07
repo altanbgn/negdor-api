@@ -12,7 +12,7 @@ export default async function (id: string) {
   const result: any = await prisma.organization.findUnique({
     where: { id },
     include: {
-      ratings: true,
+      categories: true,
       tags: true
     },
   })

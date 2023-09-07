@@ -14,10 +14,14 @@ export default async function (id: string, data: OrganizationUpdatePayload) {
 
   return await prisma.organization.update({
     where: { id },
+    include: {
+      categories: true,
+      tags: true
+    },
     data: {
       ...queryData,
       categories: {
-        set: categories.map((category: any) => ({ id: category.id }))
+        set: categories.map((categoryId: string) => ({ id: categoryId }))
       }
     }
   })
