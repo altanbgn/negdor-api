@@ -50,9 +50,9 @@ export default async function(query: Query) {
   }
 
   return {
-    list: await prisma.rating.findMany(preparedQuery),
+    list: await prisma.review.findMany(preparedQuery),
     page: page,
     perPage: perPage,
-    total: await prisma.rating.count()
+    total: await prisma.review.count()
   }
 }
