@@ -1,20 +1,24 @@
 import { Router } from "express"
+import { MemberRole } from "@prisma/client"
 
 // Locals
 import controller from "./controller"
-import { optionalLogin, requireLogin } from "@/middlewares/permission"
+import { requireLogin, requireMemberRole } from "@/middlewares/permission"
 
 const router = Router()
 
-router.route("/")
-  .post(requireLogin, controller.create)
-
-router.route("/list")
-  .get(controller.find)
-
+router.get("/list", controller.find)
+router.post("/", requireLogin, controller.create)
 router.route("/:id")
-  .get(optionalLogin, controller.findById)
-  .put(requireLogin, controller.updateById)
-  .delete(requireLogin, controller.deleteById)
+  .get(controller.findById)
+  .put(
+    requireLogin,
+    requireMemberRole(MemberRole.OWNER, MemberRole.ADMIN, MemberRole.MODERATOR),
+    controller.updateById)
+  .delete(
+    requireLogin,
+    requireMemberRole(MemberRole.OWNER),
+    controller.deleteById
+  )
 
 export default router

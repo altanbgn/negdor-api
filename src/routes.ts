@@ -10,12 +10,17 @@ import reviewRoutes from "./modules/review/routes"
 import ratingRoutes from "@/modules/rating/routes"
 import tagRoutes from "@/modules/tag/routes"
 import userRoutes from "@/modules/user/routes"
+
+import { verifyLogin } from "@/middlewares/permission"
 import config from "./utils/config"
 
 const router = express.Router()
 
 router.get("/health", (_req, res) => res.send("OK!"))
 router.get("/version", (_req, res) => res.send(config.apiVersion))
+
+router.use(verifyLogin)
+
 router.use("/auth", authRoutes)
 router.use("/category", categoryRoutes)
 router.use("/menu", menuRoutes)

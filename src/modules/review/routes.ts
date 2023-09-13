@@ -2,15 +2,26 @@ import { Router } from "express"
 
 // Locals
 import controller from "./controller"
-import { optionalLogin, requireLogin } from "@/middlewares/permission"
+import { requireLogin, requireOwnership } from "@/middlewares/permission"
 
 const router = Router()
 
-router.route("/").post(requireLogin, controller.create)
-router.route("/list").get(controller.find)
+router.get("/list", controller.find)
+router.post("/",
+  requireLogin,
+  controller.create
+)
 router.route("/:id")
-  .get(optionalLogin, controller.findById)
-  .put(requireLogin, controller.updateById)
-  .delete(requireLogin, controller.deleteById)
+  .get(controller.findById)
+  .put(
+    requireLogin,
+    requireOwnership("review"),
+    controller.updateById
+  )
+  .delete(
+    requireLogin,
+    requireOwnership("review"),
+    controller.deleteById
+  )
 
 export default router

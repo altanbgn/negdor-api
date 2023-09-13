@@ -6,11 +6,11 @@ import logger from "@/utils/logger"
 let server: any
 prisma.$connect().then(() => {
   logger.info("Connected to SQL Database")
+})
 
-  server = app.listen(config.port, () => {
-    logger.info(`Listening to port ${config.port}`)
-    logger.info(`Server is on ${config.env}`)
-  })
+server = app.listen(config.port, () => {
+  logger.info(`Listening to port ${config.port}`)
+  logger.info(`Server is on ${config.env}`)
 })
 
 const exitHandler = () => {

@@ -2,8 +2,9 @@
   "apps": [
     {
       "name": "negdor-api-production",
-      "script": "dist/index.js",
-      "instances": "3",
+      "script": "./dist/index.js",
+      "exec_mode": "cluster",
+      "instances": 3,
       "autorestart": true,
       "watch": false,
       "env": {

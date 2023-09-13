@@ -8,6 +8,12 @@ import validator from "./validator"
 import operations from "./operations"
 
 export default {
+  /* `/auth/login-facebook` - GET */
+  loginFacebook: catchAsync(async (req: Request, res: Response): Promise<void> => {
+    const result = await operations.loginFacebook(req.query.code)
+    res.status(httpStatus.CREATED).send({ data: result })
+  }),
+
   /* `/auth/login` - POST */
   login: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const sanitizedPayload: LoginPayload = await validator.loginSchema.validateAsync(req.body)

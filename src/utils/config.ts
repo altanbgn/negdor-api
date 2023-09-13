@@ -11,5 +11,7 @@ export default {
   apiPrefix: process.env.API_PREFIX || "v1",
   jwtExpiresIn: process.env.JWT_EXPIRES_IN || 3,
   mailerUser: process.env.MAILER_USER || "default mailer user",
-  mailerPass: process.env.MAILER_PASS || "default mailer pass"
+  mailerPass: process.env.MAILER_PASS || "default mailer pass",
+  fbAppId: process.env.FB_APP_ID || "default fb app id",
+  fbAppSecret: process.env.FB_APP_SECRET || "default fb app id"
 }
