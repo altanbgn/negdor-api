@@ -1,6 +1,7 @@
 export type UserUpdatePayload = {
   avatar?: string
   email?: string
+  emailVerified?: boolean
   firstname?: string
   lastname?: string
   username?: string

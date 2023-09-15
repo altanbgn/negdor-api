@@ -29,6 +29,16 @@ router.route("/me")
     controller.deleteMe
   )
 
+router.get("/send-verify-email",
+  requireLogin,
+  controller.sendVerifyEmail
+)
+
+router.get("/verify-email",
+  requireLogin,
+  controller.verifyEmail
+)
+
 router.route("/:id")
   .get(controller.findById)
   .put(

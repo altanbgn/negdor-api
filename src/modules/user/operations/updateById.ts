@@ -10,6 +10,10 @@ export default async function(id: string, data: UserUpdatePayload) {
     throw new ApiError(httpStatus.BAD_REQUEST, "Invalid id")
   }
 
+  if (data.email) {
+    data.emailVerified = false
+  }
+
   return await prisma.user.update({
     where: { id },
     data

@@ -14,11 +14,10 @@ export default async function (data: ForgotPasswordPayload): Promise<void> {
   await mailer.sendMail({
     from: config.mailerUser,
     to: data.email,
-    subject: "Negdor - Forgot Password",
+    subject: "Negdor - Recover password",
     html: `
-      <p>
-        Click <a href="${config.appUrl}/auth/recover-password?token=${token}">here</a> to recover your password.
-      </p>
+      <h1>Recover password</h1>
+      <p>Click <a href="${config.appUrl}/auth/recover-password?token=${token}">here</a> to recover your password.</p>
     `
   })
 }

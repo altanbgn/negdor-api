@@ -16,7 +16,7 @@ const prismaExtended = prisma.$extends({
           throw new ApiError(httpStatus.NOT_FOUND, "User not found!")
         }
 
-        const checkPassword = await compare(password, foundUser.password)
+        const checkPassword = await compare(password, foundUser.password || "")
 
         if (!checkPassword) {
           throw new ApiError(httpStatus.UNAUTHORIZED, "Wrong Password!")
@@ -31,7 +31,7 @@ const prismaExtended = prisma.$extends({
           throw new ApiError(httpStatus.NOT_FOUND, "User not found!")
         }
 
-        const checkPassword = await compare(password, foundUser.password)
+        const checkPassword = await compare(password, foundUser.password || "")
 
         if (!checkPassword) {
           throw new ApiError(httpStatus.UNAUTHORIZED, "Wrong Password!")

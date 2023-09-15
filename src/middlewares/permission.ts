@@ -58,7 +58,7 @@ export const requireOwnership = (model: string) => catchAsync(
 
     const result = await prisma[model].findUnique({
       where: { id: req.params.id }
-    });
+    })
 
     if (!result) {
       throw new ApiError(httpStatus.NOT_FOUND, "Not found!")
@@ -68,7 +68,7 @@ export const requireOwnership = (model: string) => catchAsync(
       result.createdUserId &&
       (result.createdUserId === res.locals.user.id)
     ) {
-      next();
+      next()
       return
     }
 
@@ -82,7 +82,7 @@ export const requireUserRole = (...args: UserRole[]) => catchAsync(
       throw new ApiError(httpStatus.UNAUTHORIZED, "Login required!")
     }
 
-    let authorized = false;
+    let authorized = false
 
     args.forEach((role: UserRole) => {
       if (res.locals.user.role === role) {
@@ -117,7 +117,7 @@ export const requireMemberRole = (...args: MemberRole[]) => catchAsync(
       throw new ApiError(httpStatus.NOT_FOUND, "Not found!")
     }
 
-    let authorized = false;
+    let authorized = false
 
     args.forEach((role: MemberRole) => {
       if (result.role === role) {

@@ -3,49 +3,63 @@ import httpStatus from "http-status"
 import { SupportedPlatform } from "@prisma/client"
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library"
 
-// Locals
+// Local
 import prisma from "@/prisma"
 import config from "@/utils/config"
 import ApiError from "@/utils/api-error"
 
-// https://www.facebook.com/v18.0/dialog/oauth?client_id=3600630626873133&redirect_uri=http%3A%2F%2Flocalhost%3A4000%2Fv1%2Fauth%2Flogin-facebook&scope=email,public_profile,user_photos
+// Will generate google login url
+// const stringifiedParams = queryString.stringify({
+//   client_id: config.googleAppId,
+//   redirect_uri: "http://localhost:4000/v1/auth/login-google",
+//   scope: [
+//     "https://www.googleapis.com/auth/userinfo.email",
+//     "https://www.googleapis.com/auth/userinfo.profile",
+//   ].join(" "),
+//   response_type: "code",
+//   access_type: "offline",
+//   prompt: "consent"
+// })
+//
+// console.log("LOGIN URL :", `https://accounts.google.com/o/oauth2/v2/auth?${stringifiedParams}`)
 
-export default async function loginFacebook(query: any): Promise<string> {
-  if (!query && typeof query !== "object") {
-    throw new ApiError(httpStatus.BAD_REQUEST, "Invalid query")
-  }
-
-  if (query?.error) {
+export default async function loginGoogle(query: any): Promise<string> {
+  if (!query || query?.error) {
     throw new ApiError(httpStatus.OK, query?.error_description || "Invalid query")
   }
 
-  const accessTokenResponse = await fetch("https://graph.facebook.com/v18.0/oauth/access_token" +
-    `?client_id=${config.facebookAppId}&` +
-    `&client_secret=${config.facebookAppSecret}&` +
-    `&redirect_uri=http%3A%2F%2Flocalhost%3A4000%2Fv1%2Fauth%2Flogin-facebook&` +
-    `&code=${query.code}`
-  )
-  const accessToken = await accessTokenResponse.json()
+  const tokenResponse = await fetch("https://oauth2.googleapis.com/token", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      code: query?.code,
+      grant_type: "authorization_code",
+      client_id: config.googleAppId,
+      client_secret: config.googleAppSecret,
+      redirect_uri: "http://localhost:4000/v1/auth/login-google",
+    })
+  })
+  const tokenData = await tokenResponse.json()
 
-  if (accessToken?.id || accessToken?.error) {
-    throw new ApiError(httpStatus.BAD_REQUEST, accessToken?.error?.message || "Access token error")
+  if (!tokenData.access_token && tokenData.error) {
+    throw new ApiError(httpStatus.BAD_REQUEST, tokenData?.error_description || "Access token error")
   }
 
-  const userDataResponse = await fetch(
-    "https://graph.facebook.com/me" +
-    `?fields=id,installed,first_name,last_name,email&` +
-    `&access_token=${accessToken.access_token}`
-  )
+  const userDataResponse = await fetch("https://www.googleapis.com/oauth2/v1/userinfo", {
+    headers: { Authorization: `Bearer ${tokenData.access_token}` }
+  })
   const userData = await userDataResponse.json()
 
-  if (userData?.id || userData?.error) {
-    throw new ApiError(httpStatus.BAD_REQUEST, userData?.error?.message || "User info error")
+  if (!userData.id || userData.error) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, tokenData.error?.message || "User info error")
   }
 
-  const appConnection = await prisma.appConnection.findFirst({
+  const appConnection = await prisma.appConnection.findUnique({
     where: {
       accessId: userData.id,
-      platform: SupportedPlatform.FACEBOOK
+      platform: SupportedPlatform.GOOGLE
     },
     include: { user: true }
   })
@@ -65,7 +79,7 @@ export default async function loginFacebook(query: any): Promise<string> {
       await prisma.appConnection.create({
         data: {
           accessId: userData.id,
-          platform: SupportedPlatform.FACEBOOK,
+          platform: SupportedPlatform.GOOGLE,
           user: { connect: { id: user.id } }
         }
       })
@@ -78,8 +92,8 @@ export default async function loginFacebook(query: any): Promise<string> {
     } else {
       const user = await prisma.user.create({
         data: {
-          firstname: userData.first_name,
-          lastname: userData.last_name,
+          firstname: userData.given_name,
+          lastname: userData.family_name,
           email: userData.email,
           username: userData.email,
         }
@@ -94,7 +108,7 @@ export default async function loginFacebook(query: any): Promise<string> {
       await prisma.appConnection.create({
         data: {
           accessId: userData.id,
-          platform: SupportedPlatform.FACEBOOK,
+          platform: SupportedPlatform.GOOGLE,
           user: { connect: { id: user.id } }
         }
       })

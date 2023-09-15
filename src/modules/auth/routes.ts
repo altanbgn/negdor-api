@@ -7,6 +7,7 @@ import { requireLogin } from "@/middlewares/permission"
 const router = Router()
 
 router.get("/login-facebook", controller.loginFacebook)
+router.get("/login-google", controller.loginGoogle)
 
 router.post("/login", controller.login)
 router.post("/register", controller.register)

@@ -42,6 +42,18 @@ export default {
     res.status(httpStatus.OK).send({ data: result })
   }),
 
+  /* `/user/send-verify-email` - GET */
+  sendVerifyEmail: catchAsync(async (_req: Request, res: Response): Promise<void> => {
+    const result = await operations.sendVerifyEmail(res.locals.user.email)
+    res.status(httpStatus.OK).send({ data: result })
+  }),
+
+  /* `/user/verify-email` - GET */
+  verifyEmail: catchAsync(async (req: Request, res: Response): Promise<void> => {
+    const result = await operations.verifyEmail(req.query.token as string)
+    res.status(httpStatus.OK).send({ data: result })
+  }),
+
   /**
    * User's own operations
    */

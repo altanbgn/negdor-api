@@ -10,22 +10,9 @@ export default async function login(payload: LoginPayload): Promise<string> {
 
   const verifiedUser = await prisma.user.verifyPasswordByEmail(email, password)
 
-  const token = sign(
-    {
-      id: verifiedUser.id,
-      avatar: verifiedUser.avatar,
-      email: verifiedUser.email,
-      firstname: verifiedUser.firstname,
-      lastname: verifiedUser.lastname,
-      username: verifiedUser.username,
-      phonenumber: verifiedUser.phonenumber,
-      role: verifiedUser.role,
-      createdAt: verifiedUser.createdAt,
-      updatedAt: verifiedUser.updatedAt
-    },
+  return sign(
+    { id: verifiedUser.id },
     config.appSecret,
     { expiresIn: `${String(config.jwtExpiresIn)}m`, algorithm: "HS512" }
   )
-
-  return token
 }

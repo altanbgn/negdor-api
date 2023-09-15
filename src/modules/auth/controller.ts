@@ -10,8 +10,14 @@ import operations from "./operations"
 export default {
   /* `/auth/login-facebook` - GET */
   loginFacebook: catchAsync(async (req: Request, res: Response): Promise<void> => {
-    const result = await operations.loginFacebook(req.query.code)
-    res.status(httpStatus.CREATED).send({ data: result })
+    const result = await operations.loginFacebook(req.query)
+    res.status(httpStatus.OK).send({ data: result })
+  }),
+
+  /* `/auth/login-google` - GET */
+  loginGoogle: catchAsync(async (req: Request, res: Response): Promise<void> => {
+    const result = await operations.loginGoogle(req.query)
+    res.status(httpStatus.OK).send({ data: result })
   }),
 
   /* `/auth/login` - POST */
