@@ -49,22 +49,6 @@ const registerSchema = Joi.object().keys({
     .error(passwordErrorHandler)
 })
 
-const changePasswordSchema = Joi.object().keys({
-  oldPassword: Joi
-    .string()
-    .required()
-    .min(8)
-    .max(50)
-    .error(passwordErrorHandler),
-
-  newPassword: Joi
-    .string()
-    .required()
-    .min(8)
-    .max(50)
-    .error(passwordErrorHandler)
-})
-
 const forgotPasswordSchema = Joi.object().keys({
   email: Joi
     .string()
@@ -82,18 +66,9 @@ const recoverPasswordSchema = Joi.object().keys({
     .error(passwordErrorHandler)
 })
 
-const recoverPasswordQuerySchema = Joi.object().keys({
-  token: Joi
-    .string()
-    .required()
-    .error(new ApiError(BAD_REQUEST, "Token is required"))
-})
-
 export default {
   loginSchema,
   registerSchema,
-  changePasswordSchema,
   forgotPasswordSchema,
   recoverPasswordSchema,
-  recoverPasswordQuerySchema
 }

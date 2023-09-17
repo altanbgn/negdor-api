@@ -13,10 +13,5 @@ export type RegisterPayload = {
   password: string
 }
 
-export type ChangePasswordPayload = {
-  oldPassword: string
-  newPassword: string
-}
-
 export type ForgotPasswordPayload = { email: string }
 export type RecoverPasswordPayload = { password: string }

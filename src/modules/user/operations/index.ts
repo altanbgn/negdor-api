@@ -5,6 +5,7 @@ import updateById from "./updateById"
 import deleteById from "./deleteById"
 import sendVerifyEmail from "./send-verify-email"
 import verifyEmail from "./verify-email"
+import changePassword from "./change-password"
 
 export default {
   find,
@@ -13,5 +14,6 @@ export default {
   updateById,
   deleteById,
   sendVerifyEmail,
-  verifyEmail
+  verifyEmail,
+  changePassword
 }

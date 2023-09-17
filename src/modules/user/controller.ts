@@ -44,13 +44,21 @@ export default {
 
   /* `/user/send-verify-email` - GET */
   sendVerifyEmail: catchAsync(async (_req: Request, res: Response): Promise<void> => {
-    const result = await operations.sendVerifyEmail(res.locals.user.email)
-    res.status(httpStatus.OK).send({ data: result })
+    await operations.sendVerifyEmail(res.locals.user.email)
+    res.status(httpStatus.OK).send({ message: "Verification email sent successfully!" })
   }),
 
   /* `/user/verify-email` - GET */
   verifyEmail: catchAsync(async (req: Request, res: Response): Promise<void> => {
-    const result = await operations.verifyEmail(req.query.token as string)
+    await operations.verifyEmail(res.locals.user, req.query.token as string)
+    res.status(httpStatus.OK).send({ message: "Email verified!" })
+  }),
+
+  /* `/user/change-password` - POST */
+  changePassword: catchAsync(async (req: Request, res: Response): Promise<void> => {
+    const sanitizedPayload = await validator.changePasswordSchema.validateAsync(req.body)
+
+    const result = await operations.changePassword(sanitizedPayload, res.locals.user)
     res.status(httpStatus.OK).send({ data: result })
   }),
 

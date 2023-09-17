@@ -22,9 +22,11 @@ export default async function (
     throw new ApiError(httpStatus.UNAUTHORIZED, "Invalid token!")
   }
 
-  const decoded: JwtPayload = verify(token.split(" ")[1], config.appSecret!, {
-    algorithms: ["HS512"]
-  }) as DecodedData
+  const decoded: JwtPayload = verify(
+    token,
+    config.appSecret!,
+    { algorithms: ["HS512"] }
+  ) as DecodedData
 
   const salt = await genSalt(12)
   const hashedPassword = await hash(data.password, salt)

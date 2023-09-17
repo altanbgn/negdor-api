@@ -13,11 +13,11 @@ router.route("/:id")
   .get(controller.findById)
   .put(
     requireLogin,
-    requireMemberRole(MemberRole.OWNER, MemberRole.ADMIN, MemberRole.MODERATOR),
+    requireMemberRole("organization", MemberRole.OWNER, MemberRole.ADMIN, MemberRole.MODERATOR),
     controller.updateById)
   .delete(
     requireLogin,
-    requireMemberRole(MemberRole.OWNER),
+    requireMemberRole("organization", MemberRole.OWNER),
     controller.deleteById
   )
 

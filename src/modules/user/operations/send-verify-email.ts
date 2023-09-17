@@ -3,9 +3,9 @@ import { sign } from "jsonwebtoken"
 import mailer from "@/mailer"
 import config from "@/utils/config"
 
-export default async function(user: any): Promise<void> {
+export default async function(email: string): Promise<void> {
   const token = sign(
-    { email: user.email },
+    { email: email },
     config.appSecret!,
     {
       expiresIn: `${String(config.jwtExpiresIn)}m`,
@@ -15,11 +15,11 @@ export default async function(user: any): Promise<void> {
 
   await mailer.sendMail({
     from: config.mailerUser,
-    to: user.email,
+    to: email,
     subject: "Negdor - Verify your email",
     html: `
       <h1>Verify your email</h1>
-      <p>Click <a href="${config.appUrl}/auth/verify-password?token=${token}">here</a> to verify your email.</p>
+      <p>Click <a href="${config.appUrl}/user/verify-email?token=${token}">here</a> to verify your email.</p>
     `
   })
 }
