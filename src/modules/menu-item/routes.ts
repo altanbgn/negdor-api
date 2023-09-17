@@ -11,7 +11,7 @@ router.get("/list", controller.find)
 router.post("/",
   requireLogin,
   requireMemberRole(MemberRole.ADMIN, MemberRole.MODERATOR, MemberRole.OWNER),
-  requireUserRole(UserRole.ADMIN, UserRole.MODERATOR, UserRole.CLIENT),
+  requireUserRole(UserRole.MODERATOR, UserRole.CLIENT),
   controller.create
 )
 router.route("/:id")
@@ -19,13 +19,13 @@ router.route("/:id")
   .put(
     requireLogin,
     requireMemberRole(MemberRole.ADMIN, MemberRole.MODERATOR, MemberRole.OWNER),
-    requireUserRole(UserRole.ADMIN, UserRole.MODERATOR, UserRole.CLIENT),
+    requireUserRole(UserRole.MODERATOR, UserRole.CLIENT),
     controller.updateById
   )
   .delete(
     requireLogin,
     requireMemberRole(MemberRole.ADMIN, MemberRole.MODERATOR, MemberRole.OWNER),
-    requireUserRole(UserRole.ADMIN, UserRole.MODERATOR, UserRole.CLIENT),
+    requireUserRole(UserRole.MODERATOR, UserRole.CLIENT),
     controller.deleteById
   )
 

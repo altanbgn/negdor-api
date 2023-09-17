@@ -48,12 +48,12 @@ router.route("/:id")
   .get(controller.findById)
   .put(
     requireLogin,
-    requireUserRole(UserRole.ADMIN, UserRole.MODERATOR),
+    requireUserRole(UserRole.MODERATOR),
     controller.updateById
   )
   .delete(
     requireLogin,
-    requireUserRole(UserRole.ADMIN, UserRole.MODERATOR),
+    requireUserRole(UserRole.MODERATOR),
     controller.deleteById
   )
 

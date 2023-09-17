@@ -12,8 +12,21 @@ export default async function (id: string) {
   const result: any = await prisma.organization.findUnique({
     where: { id },
     include: {
-      categories: true,
-      tags: true
+      categories: {
+        select: {
+          id: true,
+          icon: true,
+          value: true
+        }
+      },
+      timeTable: {
+        select: {
+          id: true,
+          weekday: true,
+          startTime: true,
+          endTime: true,
+        }
+      },
     },
   })
 

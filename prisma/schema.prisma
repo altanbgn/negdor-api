@@ -44,18 +44,18 @@ model User {
 }
 
 model Organization {
-  id               String     @id @unique @default(cuid())
+  id               String      @id @unique @default(cuid())
   name             String
   shortDescription String
   fullDescription  String
-  director         String     @default("")
+  director         String      @default("")
   emails           String[]
   phonenumbers     String[]
   locations        String[]
   features         String[]
   logo             String? // Image
   banner           String? // Image
-  score            Float      @default(0)
+  score            Float       @default(0)
   images           String[]
   categories       Category[]
   tags             Tag[]
@@ -63,8 +63,9 @@ model Organization {
   members          Member[]
   reviews          Review[]
   ratings          Rating[]
-  createdAt        DateTime   @default(now())
-  updatedAt        DateTime   @default(now()) @updatedAt
+  timeTable        TimeTable[]
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @default(now()) @updatedAt
 
   @@index([id, name])
 }
@@ -80,8 +81,8 @@ model AppConnection {
   accessId String            @unique
   platform SupportedPlatform
 
-  @@index([accessId])
   @@unique([userId, platform])
+  @@index([accessId])
 }
 
 model Review {
@@ -173,6 +174,17 @@ model Member {
   @@index([id, userId, organizationId])
 }
 
+model TimeTable {
+  id             String       @id @unique @default(cuid())
+  weekday        Weekday
+  startTime      DateTime
+  endTime        DateTime
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([weekday, organizationId])
+}
+
 // ========================
 // Enums
 // ========================
@@ -194,4 +206,14 @@ enum MemberRole {
 enum SupportedPlatform {
   FACEBOOK
   GOOGLE
+}
+
+enum Weekday {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
 }

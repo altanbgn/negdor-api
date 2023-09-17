@@ -23,9 +23,15 @@ export default async function (query: Query) {
     include: {
       categories: {
         select: {
-          id: true,
           icon: true,
           value: true
+        }
+      },
+      timeTable: {
+        select: {
+          weekday: true,
+          startTime: true,
+          endTime: true,
         }
       },
       _count: {

@@ -56,10 +56,7 @@ export const requireOwnership = (model: string) => catchAsync(
       throw new ApiError(httpStatus.UNAUTHORIZED, "Login required!")
     }
 
-    if (
-      res.locals.user.role === UserRole.MODERATOR ||
-      res.locals.user.role === UserRole.ADMIN
-    ) {
+    if (res.locals.user.role.includes([UserRole.MODERATOR, UserRole.ADMIN])) {
       next()
       return
     }
@@ -90,6 +87,11 @@ export const requireUserRole = (...args: UserRole[]) => catchAsync(
       throw new ApiError(httpStatus.UNAUTHORIZED, "Login required!")
     }
 
+    if (res.locals.user.role === UserRole.ADMIN) {
+      next()
+      return
+    }
+
     let authorized = false
 
     args.forEach((role: UserRole) => {
@@ -114,7 +116,7 @@ export const requireMemberRole = (model: string, ...args: MemberRole[]) => catch
       throw new ApiError(httpStatus.UNAUTHORIZED, "Login required!")
     }
 
-    if (res.locals.user.role.includes([UserRole.ADMIN, UserRole.MODERATOR])) {
+    if (res.locals.user?.role === UserRole.ADMIN) {
       next()
       return
     }
@@ -148,12 +150,12 @@ export const requireMemberRole = (model: string, ...args: MemberRole[]) => catch
               userId: res.locals.user.id
             }
           })
-        } else {
-          throw new ApiError(httpStatus.UNAUTHORIZED, "Unauthorized!")
         }
-      } else {
-        throw new ApiError(httpStatus.UNAUTHORIZED, "Unauthorized!")
       }
+    }
+
+    if (!result) {
+      throw new ApiError(httpStatus.UNAUTHORIZED, "Unauthorized!")
     }
 
     let authorized = false

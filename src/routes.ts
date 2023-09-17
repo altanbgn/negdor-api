@@ -1,6 +1,8 @@
 import express from "express"
 
 // Routes
+import { verifyLogin } from "@/middlewares/permission"
+import config from "./utils/config"
 import authRoutes from "@/modules/auth/routes"
 import categoryRoutes from "@/modules/category/routes"
 import menuRoutes from "@/modules/menu/routes"
@@ -9,10 +11,8 @@ import organizationRoutes from "@/modules/organization/routes"
 import reviewRoutes from "./modules/review/routes"
 import ratingRoutes from "@/modules/rating/routes"
 import tagRoutes from "@/modules/tag/routes"
+import timeTableRoutes from "@/modules/time-table/routes"
 import userRoutes from "@/modules/user/routes"
-
-import { verifyLogin } from "@/middlewares/permission"
-import config from "./utils/config"
 
 const router = express.Router()
 
@@ -29,6 +29,7 @@ router.use("/organization", organizationRoutes)
 router.use("/review", reviewRoutes)
 router.use("/rating", ratingRoutes)
 router.use("/tag", tagRoutes)
+router.use("/time-table", timeTableRoutes)
 router.use("/user", userRoutes)
 
 export default router

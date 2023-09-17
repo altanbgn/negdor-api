@@ -10,19 +10,19 @@ const router = Router()
 router.get("/list", controller.find)
 router.post("/",
   requireLogin,
-  requireUserRole(UserRole.ADMIN, UserRole.MODERATOR),
+  requireUserRole(UserRole.MODERATOR),
   controller.create
 )
 router.route("/:id")
   .get(controller.findById)
   .put(
     requireLogin,
-    requireUserRole(UserRole.ADMIN, UserRole.MODERATOR),
+    requireUserRole(UserRole.MODERATOR),
     controller.updateById
   )
   .delete(
     requireLogin,
-    requireUserRole(UserRole.ADMIN, UserRole.MODERATOR),
+    requireUserRole(UserRole.MODERATOR),
     controller.deleteById
   )
 
