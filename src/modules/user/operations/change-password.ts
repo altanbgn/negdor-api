@@ -10,7 +10,7 @@ import type { ChangePasswordPayload } from "../types"
 export default async function (data: ChangePasswordPayload, user: User) {
   const verifiedUser = await prisma.user.verifyPasswordById(
     user.id,
-    data.oldPassword
+    data.oldPassword || ""
   )
 
   if (!verifiedUser) {

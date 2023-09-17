@@ -3,16 +3,23 @@ import { BAD_REQUEST } from "http-status"
 import ApiError from "@/utils/api-error"
 
 const createSchema = Joi.object().keys({
-  title: Joi.string().required(),
+  title: Joi
+    .string()
+    .required()
+    .error(new ApiError(BAD_REQUEST, "Title is required")),
   description: Joi
     .string()
     .required()
-    .error(new ApiError(BAD_REQUEST, "Description is required"))
+    .error(new ApiError(BAD_REQUEST, "Description is required")),
+  organizationId: Joi
+    .string()
+    .required()
+    .error(new ApiError(BAD_REQUEST, "Organization ID is required")),
 })
 
 const updateSchema = Joi.object().keys({
   title: Joi.string(),
-  description: Joi.string()
+  description: Joi.string(),
 })
 
 const findQuerySchema = Joi.object().keys({

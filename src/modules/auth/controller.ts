@@ -8,7 +8,6 @@ import operations from "./operations"
 import type {
   LoginPayload,
   RegisterPayload,
-  ChangePasswordPayload,
   ForgotPasswordPayload
 } from "./types"
 
@@ -41,14 +40,6 @@ export default {
     res.status(httpStatus.CREATED).send({ message: "User registered successfully!" })
   }),
 
-  /* `/auth/change-password` - POST */
-  changePassword: catchAsync(async (req: Request, res: Response): Promise<void> => {
-    const sanitizedPayload: ChangePasswordPayload = await validator.changePasswordSchema.validateAsync(req.body)
-
-    const result = await operations.changePassword(sanitizedPayload, res.locals.user)
-    res.status(httpStatus.OK).send({ data: result })
-  }),
-
   /* `/auth/forgot-password` - POST */
   forgotPassword: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const sanitizedPayload: ForgotPasswordPayload = await validator.forgotPasswordSchema.validateAsync(req.body)
@@ -61,7 +52,7 @@ export default {
   recoverPassword: catchAsync(async (req: Request, res: Response): Promise<void> => {
     const sanitizedPayload = await validator.recoverPasswordSchema.validateAsync(req.body)
 
-    await operations.recoverPassword(req.headers.authorization, sanitizedPayload)
+    await operations.recoverPassword(req.query.token as string, sanitizedPayload)
     res.status(httpStatus.OK).send({ message: "Password reset successfully!" })
   })
 }

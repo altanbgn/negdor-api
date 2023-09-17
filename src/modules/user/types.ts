@@ -13,3 +13,4 @@ export type ChangePasswordPayload = {
   newPassword: string
   oldPassword?: string
 }
+

@@ -39,6 +39,11 @@ router.get("/verify-email",
   controller.verifyEmail
 )
 
+router.post("/change-password",
+  requireLogin,
+  controller.changePassword
+)
+
 router.route("/:id")
   .get(controller.findById)
   .put(

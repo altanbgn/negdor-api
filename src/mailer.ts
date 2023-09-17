@@ -5,6 +5,6 @@ export default nodemailer.createTransport({
   service: "gmail",
   auth: {
     user: config.mailerUser,
-    pass: config.mailerUser
+    pass: config.mailerPass
   },
 })

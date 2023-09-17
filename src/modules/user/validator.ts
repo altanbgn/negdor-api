@@ -52,8 +52,25 @@ const findQuerySchema = Joi.object().keys({
     .error(new ApiError(BAD_REQUEST, "Search max length is 255"))
 })
 
+const changePasswordSchema = Joi.object().keys({
+  oldPassword: Joi
+    .string()
+    .required()
+    .min(8)
+    .max(50)
+    .error(passwordErrorHandler),
+
+  newPassword: Joi
+    .string()
+    .required()
+    .min(8)
+    .max(50)
+    .error(passwordErrorHandler)
+})
+
 export default {
   createSchema,
   updateSchema,
-  findQuerySchema
+  findQuerySchema,
+  changePasswordSchema
 }

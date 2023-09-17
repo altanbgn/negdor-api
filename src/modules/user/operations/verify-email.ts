@@ -12,17 +12,24 @@ type DecodedData = {
   exp: number
 }
 
-export default async function (token: string | null | undefined): Promise<void> {
+export default async function (user: any, token: string | null | undefined): Promise<void> {
   if (!token) {
     throw new ApiError(httpStatus.UNAUTHORIZED, "Invalid token!")
   }
 
-  const decoded: JwtPayload = verify(token.split(" ")[1], config.appSecret!, {
-    algorithms: ["HS512"]
-  }) as DecodedData
+  const decoded: JwtPayload = verify(
+    token,
+    config.appSecret!,
+    { algorithms: ["HS512"] }
+  ) as DecodedData
 
-  await prisma.user.update({
-    where: { email: decoded.email },
-    data: { emailVerified: true }
-  })
+
+  if (user.email === decoded.email) {
+    await prisma.user.update({
+      where: { email: decoded.email },
+      data: { emailVerified: true }
+    })
+  } else {
+    throw new ApiError(httpStatus.UNAUTHORIZED, "Wrong token")
+  }
 }
