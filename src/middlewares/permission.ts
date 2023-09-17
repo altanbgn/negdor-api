@@ -129,25 +129,31 @@ export const requireMemberRole = (model: string, ...args: MemberRole[]) => catch
         }
       })
     } else {
-      const organizationId = req.params.id || req.body.organizationId
-
-      const row = await prisma[model].findFirst({
-        where: { id: organizationId },
-      })
-
-      if (row?.organizationId) {
+      if (req.body.organizationId) {
         result = await prisma.member.findFirst({
           where: {
-            organizationId: row.organizationId,
+            organizationId: req.body.organizationId,
             userId: res.locals.user.id
           }
         })
+      } else if (req.params.id) {
+        const row = await prisma[model].findFirst({
+          where: { id: req.params.id },
+        })
+
+        if (row?.organizationId) {
+          result = await prisma.member.findFirst({
+            where: {
+              organizationId: row.organizationId,
+              userId: res.locals.user.id
+            }
+          })
+        } else {
+          throw new ApiError(httpStatus.UNAUTHORIZED, "Unauthorized!")
+        }
       } else {
-        throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Internal server error!")
+        throw new ApiError(httpStatus.UNAUTHORIZED, "Unauthorized!")
       }
-    }
-    if (!result) {
-      throw new ApiError(httpStatus.UNAUTHORIZED, "Unauthorized!")
     }
 
     let authorized = false
