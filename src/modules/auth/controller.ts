@@ -3,9 +3,14 @@ import httpStatus from "http-status"
 
 // Locals
 import catchAsync from "@/utils/catch-async"
-import type { LoginPayload, RegisterPayload, ChangePasswordPayload, ForgotPasswordPayload } from "./types"
 import validator from "./validator"
 import operations from "./operations"
+import type {
+  LoginPayload,
+  RegisterPayload,
+  ChangePasswordPayload,
+  ForgotPasswordPayload
+} from "./types"
 
 export default {
   /* `/auth/login-facebook` - GET */
