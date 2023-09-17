@@ -23,7 +23,10 @@ const createSchema = Joi.object({
     .required()
     .error(new ApiError(BAD_REQUEST, "Image is required")),
 
-  menuId: Joi.string()
+  menuId: Joi
+    .string()
+    .required()
+    .error(new ApiError(BAD_REQUEST, "Menu is required")),
 })
 
 const updateSchema = Joi.object({

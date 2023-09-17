@@ -1,8 +1,8 @@
 import { Router } from "express"
-import { MemberRole, UserRole } from "@prisma/client"
+// import { MemberRole } from "@prisma/client"
 
 // Locals
-import { requireLogin, requireMemberRole, requireUserRole } from "@/middlewares/permission"
+import { requireLogin } from "@/middlewares/permission"
 import controller from "./controller"
 
 const router = Router()
@@ -10,22 +10,19 @@ const router = Router()
 router.get("/list", controller.find)
 router.post("/",
   requireLogin,
-  requireMemberRole(MemberRole.ADMIN, MemberRole.MODERATOR, MemberRole.OWNER),
-  requireUserRole(UserRole.MODERATOR, UserRole.CLIENT),
+  // requireMemberRole("menuItem", MemberRole.ADMIN, MemberRole.MODERATOR, MemberRole.OWNER),
   controller.create
 )
 router.route("/:id")
   .get(controller.findById)
   .put(
     requireLogin,
-    requireMemberRole(MemberRole.ADMIN, MemberRole.MODERATOR, MemberRole.OWNER),
-    requireUserRole(UserRole.MODERATOR, UserRole.CLIENT),
+    // requireMemberRole("menuItem", MemberRole.ADMIN, MemberRole.MODERATOR, MemberRole.OWNER),
     controller.updateById
   )
   .delete(
     requireLogin,
-    requireMemberRole(MemberRole.ADMIN, MemberRole.MODERATOR, MemberRole.OWNER),
-    requireUserRole(UserRole.MODERATOR, UserRole.CLIENT),
+    // requireMemberRole("menuItem", MemberRole.ADMIN, MemberRole.MODERATOR, MemberRole.OWNER),
     controller.deleteById
   )
 
