@@ -133,7 +133,7 @@ export const requireMemberRole = (model: string, ...args: MemberRole[]) => catch
         where: { id: req.params.id }
       })
 
-      if (row.organizationId) {
+      if (row?.organizationId) {
         result = await prisma.member.findFirst({
           where: {
             organizationId: row.organizationId,
