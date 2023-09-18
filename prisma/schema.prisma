@@ -146,9 +146,11 @@ model Menu {
   id             String       @id @unique @default(cuid())
   title          String
   description    String
-  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   organizationId String
   items          MenuItem[]
+
+  @@index([id, title])
 }
 
 model MenuItem {
@@ -159,6 +161,8 @@ model MenuItem {
   image       String
   menu        Menu   @relation(fields: [menuId], references: [id], onDelete: Restrict)
   menuId      String
+
+  @@index([id])
 }
 
 model Member {
@@ -177,11 +181,12 @@ model Member {
 model TimeTable {
   id             String       @id @unique @default(cuid())
   weekday        Weekday
-  startTime      DateTime
-  endTime        DateTime
+  startTime      DateTime     @db.Time()
+  endTime        DateTime     @db.Time()
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
+  @@index([id])
   @@unique([weekday, organizationId])
 }
 

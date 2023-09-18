@@ -1,7 +1,7 @@
 export type TimeTableCreatePayload = {
   weekday: "MONDAY" | "TUESDAY" | "WEDNESDAY" | "THURSDAY" | "FRIDAY" | "SATURDAY" | "SUNDAY"
-  startTime: Date
-  endTime: Date
+  startTime: string
+  endTime: string
   organizationId: string
 }
 

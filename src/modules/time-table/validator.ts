@@ -10,10 +10,12 @@ const createSchema = Joi.object().keys({
     .error(new ApiError(BAD_REQUEST, "Invalid weekday")),
   startTime: Joi
     .string()
+    .regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/)
     .required()
     .error(new ApiError(BAD_REQUEST, "Invalid start time")),
   endTime: Joi
     .string()
+    .regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/)
     .required()
     .error(new ApiError(BAD_REQUEST, "Invalid end time")),
   organizationId: Joi
@@ -27,8 +29,12 @@ const updateSchema = Joi.object().keys({
     .string()
     .valid("MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY")
     .error(new ApiError(BAD_REQUEST, "Invalid weekday")),
-  startTime: Joi.date(),
-  endTime: Joi.date()
+  startTime: Joi
+    .string()
+    .regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/),
+  endTime: Joi
+    .string()
+    .regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/)
 })
 
 const findQuerySchema = Joi.object().keys({
