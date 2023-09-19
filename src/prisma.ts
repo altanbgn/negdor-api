@@ -5,12 +5,12 @@ import { compare } from "bcryptjs"
 import { PrismaClient } from "@prisma/client"
 import ApiError from "./utils/api-error"
 
-const prisma = new PrismaClient()
-const prismaExtended = prisma.$extends({
+export const prismaCore = new PrismaClient()
+export default prismaCore.$extends({
   model: {
     user: {
       async verifyPasswordByEmail(email: string, password: string) {
-        const foundUser = await prisma.user.findUnique({ where: { email } })
+        const foundUser = await prismaCore.user.findUnique({ where: { email } })
 
         if (!foundUser) {
           throw new ApiError(httpStatus.NOT_FOUND, "User not found!")
@@ -25,7 +25,7 @@ const prismaExtended = prisma.$extends({
         return foundUser
       },
       async verifyPasswordById(id: string, password: string) {
-        const foundUser = await prisma.user.findUnique({ where: { id } })
+        const foundUser = await prismaCore.user.findUnique({ where: { id } })
 
         if (!foundUser) {
           throw new ApiError(httpStatus.NOT_FOUND, "User not found!")
@@ -63,5 +63,3 @@ const prismaExtended = prisma.$extends({
     }
   }
 })
-
-export default prismaExtended
