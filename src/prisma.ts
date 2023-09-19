@@ -48,6 +48,18 @@ const prismaExtended = prisma.$extends({
           return "********"
         }
       }
+    },
+    timeTable: {
+      startTime: {
+        compute(data: any) {
+          return data.startTime.toISOString().slice(11, -1).slice(0, 5)
+        }
+      },
+      endTime: {
+        compute(data: any) {
+          return data.endTime.toISOString().slice(11, -1).slice(0, 5)
+        }
+      }
     }
   }
 })
