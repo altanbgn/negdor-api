@@ -2,10 +2,11 @@ import { Router } from "express"
 import { MemberRole } from "@prisma/client"
 
 // Locals
-import controller from "./controller"
+import OrganizationController from "./controller"
 import { requireLogin, requireMemberRole } from "@/middlewares/permission"
 
 const router = Router()
+const controller = new OrganizationController()
 
 router.get("/list", controller.find)
 router.post("/", requireLogin, controller.create)

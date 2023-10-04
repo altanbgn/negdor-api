@@ -4,8 +4,6 @@ import ApiError from "@/utils/api-error"
 
 const createSchema = Joi.object().keys({
   icon: Joi.string(),
-  handle: Joi.string(),
-  parentId: Joi.string(),
   value: Joi
     .string()
     .required()
@@ -14,14 +12,12 @@ const createSchema = Joi.object().keys({
 
 const updateSchema = Joi.object().keys({
   icon: Joi.string(),
-  parentId: Joi.string(),
   value: Joi.string()
 })
 
 const findQuerySchema = Joi.object().keys({
   page: Joi.string(),
   perPage: Joi.string(),
-  parentId: Joi.string(),
   search: Joi
   .string()
   .max(255)

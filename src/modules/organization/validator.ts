@@ -8,6 +8,11 @@ const createSchema = Joi.object().keys({
     .required()
     .error(new ApiError(BAD_REQUEST, "Name is required")),
 
+  handle: Joi
+    .string()
+    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
+    .error(new ApiError(BAD_REQUEST, "Handle must be lowercase and contain only letters and numbers")),
+
   shortDescription: Joi
     .string()
     .required()
@@ -39,6 +44,10 @@ const createSchema = Joi.object().keys({
 
 const updateSchema = Joi.object().keys({
   name: Joi.string(),
+  handle: Joi
+    .string()
+    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
+    .error(new ApiError(BAD_REQUEST, "Handle must be lowercase and contain only letters and numbers")),
   shortDescription: Joi.string(),
   fullDescription: Joi.string(),
   director: Joi.string(),

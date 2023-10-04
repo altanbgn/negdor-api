@@ -3,9 +3,10 @@ import { UserRole } from "@prisma/client"
 
 // Locals
 import { requireLogin, requireUserRole } from "@/middlewares/permission"
-import controller from "./controller"
+import TagController from "./controller"
 
 const router = Router()
+const controller = new TagController()
 
 router.get("/list", controller.find)
 router.post("/",

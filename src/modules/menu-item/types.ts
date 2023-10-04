@@ -1,3 +1,5 @@
+import type { PaginationQuery } from "@/types"
+
 export type CreateMenuItemPayload = {
   title: string
   description: string
@@ -7,3 +9,5 @@ export type CreateMenuItemPayload = {
 }
 
 export type UpdateMenuItemPayload = Partial<CreateMenuItemPayload>
+
+export interface MenuItemFindQuery extends PaginationQuery { search?: string }

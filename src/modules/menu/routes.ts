@@ -3,9 +3,10 @@ import { MemberRole, UserRole } from "@prisma/client"
 
 // Locals
 import { requireLogin, requireUserRole, requireMemberRole } from "@/middlewares/permission"
-import controller from "./controller"
+import MenuController from "./controller"
 
 const router = Router()
+const controller = new MenuController()
 
 router.get("/list", controller.find)
 router.post("/",

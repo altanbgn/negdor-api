@@ -1,9 +1,10 @@
 import { Router } from "express"
 
 // Locals
-import controller from "./controller"
+import AuthController from "./controller"
 
 const router = Router()
+const controller = new AuthController()
 
 router.get("/login-facebook", controller.loginFacebook)
 router.get("/login-google", controller.loginGoogle)

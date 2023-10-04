@@ -1,3 +1,5 @@
+import { PaginationQuery } from "@/types"
+
 export type UserUpdatePayload = {
   avatar?: string
   email?: string
@@ -14,3 +16,10 @@ export type ChangePasswordPayload = {
   oldPassword?: string
 }
 
+export type DecodedData = {
+  email: string
+  iat: number
+  exp: number
+}
+
+export interface UserFindQuery extends PaginationQuery { search?: string }

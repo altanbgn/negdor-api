@@ -3,9 +3,10 @@ import { MemberRole } from "@prisma/client"
 
 // Locals
 import { requireLogin, requireMemberRole } from "@/middlewares/permission"
-import controller from "./controller"
+import TimeTableController from "./controller"
 
 const router = Router()
+const controller = new TimeTableController()
 
 router.get("/list", controller.find)
 router.post("/",

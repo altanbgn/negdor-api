@@ -3,9 +3,10 @@ import { Router } from "express"
 
 // Locals
 import { requireLogin } from "@/middlewares/permission"
-import controller from "./controller"
+import MenuItemController from "./controller"
 
 const router = Router()
+const controller = new MenuItemController()
 
 router.get("/list", controller.find)
 router.post("/",

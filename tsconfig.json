@@ -18,17 +18,21 @@
     "strictBindCallApply": true,
     "strictPropertyInitialization": true,
     "noImplicitThis": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
     "allowJs": false,
     "sourceMap": false,
 
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "tsoa": ["node_modules/tsoa/dist/*"]
     }
   },
   "include": ["src", "src/**/*.ts"],

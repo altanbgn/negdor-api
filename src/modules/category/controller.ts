@@ -2,44 +2,41 @@ import { Request, Response } from "express"
 import httpStatus from "http-status"
 
 // Locals
-import operations from "./operations"
+import CategoryServices from "./services"
 import validator from "./validator"
 import catchAsync from "@/utils/catch-async"
 
-export default {
-  /* `/category/list` - GET */
-  find: catchAsync(async (req: Request, res: Response): Promise<void> => {
+const services = new CategoryServices()
+
+export default class CategoryController {
+  find = catchAsync(async (req: Request, res: Response): Promise<void> => {
     const sanitizedQuery = await validator.findQuerySchema.validateAsync(req.query)
-    const result = await operations.find(sanitizedQuery)
+    const result = await services.find(sanitizedQuery)
 
     res.status(httpStatus.OK).send({ data: result })
-  }),
+  })
 
-  /* `/category/:id` - GET */
-  findById: catchAsync(async (req: Request, res: Response): Promise<void> => {
-    const result = await operations.findById(req.params.id)
+  findById = catchAsync(async (req: Request, res: Response): Promise<void> => {
+    const result = await services.findById(req.params.id)
     res.status(httpStatus.OK).send({ data: result })
-  }),
+  })
 
-  /* `/category` - POST */
-  create: catchAsync(async (req: Request, res: Response): Promise<void> => {
+  create = catchAsync(async (req: Request, res: Response): Promise<void> => {
     const sanitizedPayload = await validator.createSchema.validateAsync(req.body)
 
-    const result = await operations.create(sanitizedPayload)
+    const result = await services.create(sanitizedPayload)
     res.status(httpStatus.CREATED).send({ data: result })
-  }),
+  })
 
-  /* `/category/id` - PUT */
-  updateById: catchAsync(async (req: Request, res: Response): Promise<void> => {
+  updateById = catchAsync(async (req: Request, res: Response): Promise<void> => {
     const sanitizedPayload = await validator.updateSchema.validateAsync(req.body)
 
-    const result = await operations.updateById(req.params.id, sanitizedPayload)
+    const result = await services.updateById(req.params.id, sanitizedPayload)
     res.status(httpStatus.OK).send({ data: result })
-  }),
+  })
 
-  /* `/category/id` - DELETE */
-  deleteById: catchAsync(async (req: Request, res: Response): Promise<void> => {
-    const result = await operations.deleteById(req.params.id)
+  deleteById = catchAsync(async (req: Request, res: Response): Promise<void> => {
+    const result = await services.deleteById(req.params.id)
     res.status(httpStatus.OK).send({ data: result })
   })
 }

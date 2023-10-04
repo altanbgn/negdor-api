@@ -13,5 +13,11 @@ export type RegisterPayload = {
   password: string
 }
 
+export type DecodedData = {
+  email: string
+  iat: number
+  exp: number
+}
+
 export type ForgotPasswordPayload = { email: string }
 export type RecoverPasswordPayload = { password: string }
