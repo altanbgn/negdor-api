@@ -1,10 +1,11 @@
 import { Router } from "express"
 
 // Locals
-import controller from "./controller"
+import ReviewController from "./controller"
 import { requireLogin, requireOwnership } from "@/middlewares/permission"
 
 const router = Router()
+const controller = new ReviewController()
 
 router.get("/list", controller.find)
 router.post("/",

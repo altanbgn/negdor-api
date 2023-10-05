@@ -8,6 +8,7 @@ export type OrganizationCreatePayload = {
   emails?: Array<string>
   phonenumbers?: Array<string>
   locations?: Array<string>
+  socials?: any
   logo?: string
   banner?: string
   images?: Array<string>

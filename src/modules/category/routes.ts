@@ -3,7 +3,7 @@ import { UserRole } from "@prisma/client"
 
 // Locals
 import { requireLogin, requireUserRole } from "@/middlewares/permission"
-import { CategoryController } from "./controller"
+import CategoryController from "./controller"
 
 const router = Router()
 const controller = new CategoryController()
