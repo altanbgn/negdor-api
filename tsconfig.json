@@ -26,13 +26,9 @@
     "allowJs": false,
     "sourceMap": false,
 
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "tsoa": ["node_modules/tsoa/dist/*"]
+      "@/*": ["./src/*"]
     }
   },
   "include": ["src", "src/**/*.ts"],

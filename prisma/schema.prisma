@@ -1,6 +1,6 @@
-// ========================
-// Configurations
-// ========================
+//================//
+// Configurations //
+//================//
 
 generator client {
   provider        = "prisma-client-js"
@@ -9,7 +9,7 @@ generator client {
 
 generator docs {
   provider              = "node node_modules/prisma-docs-generator"
-  output                = "../prisma-docs"
+  output                = "../docs"
   includeRelationFields = true
 }
 
@@ -18,9 +18,9 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// ========================
-// Main Models
-// ========================
+//=============//
+// Main Models //
+//=============//
 
 model User {
   id             String          @id @unique @default(cuid())
@@ -73,9 +73,9 @@ model Organization {
   @@index([id, handle, name])
 }
 
-// ========================
-// RELATIONS
-// ========================
+//===========//
+// RELATIONS //
+//===========//
 
 model AppConnection {
   id       String            @id @unique @default(cuid())
@@ -203,9 +203,9 @@ model TimeTable {
   @@index([id])
 }
 
-// ========================
-// Enums
-// ========================
+//=======//
+// Enums //
+//=======//
 
 enum UserRole {
   USER
