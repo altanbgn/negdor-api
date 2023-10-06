@@ -19,7 +19,7 @@ export default class AuthController {
     const sanitizedPayload: LoginPayload = await validator.loginSchema.validateAsync(req.body)
 
     const result = await service.login(sanitizedPayload)
-    res.status(httpStatus.CREATED).send({ data: result })
+    res.status(httpStatus.OK).send({ data: result })
   })
 
   /* `/auth/login-facebook` - GET */

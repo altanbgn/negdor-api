@@ -56,8 +56,6 @@ export default class AuthService {
       if (error.code === "P2002") {
         throw new ApiError(httpStatus.BAD_REQUEST, "User with this email already exists!")
       }
-
-      throw error
     })
   }
 
