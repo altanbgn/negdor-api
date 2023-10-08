@@ -37,8 +37,8 @@ export default class CategoryServices {
 
     return {
       list: await prisma.category.findMany(preparedQuery),
-      currentPage: page,
-      perPage: perPage,
+      page,
+      perPage,
       total: await prisma.category.count()
     }
   }

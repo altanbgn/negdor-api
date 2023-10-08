@@ -27,8 +27,8 @@ export default class FeatureServices {
 
     return {
       list: await prisma.feature.findMany(preparedQuery),
-      currentPage: page,
-      perPage: perPage,
+      page,
+      perPage,
       total: await prisma.feature.count()
     }
   }

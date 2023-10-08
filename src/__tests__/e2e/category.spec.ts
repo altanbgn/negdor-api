@@ -79,7 +79,7 @@ describe("Module: Category", function() {
     assert.isObject(result.body.data)
 
     assert.isArray(data.list)
-    assert.isNumber(data.currentPage)
+    assert.isNumber(data.page)
     assert.isNumber(data.perPage)
     assert.isNumber(data.total)
     expect(result.statusCode).to.be.equal(200)

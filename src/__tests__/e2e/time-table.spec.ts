@@ -53,18 +53,31 @@ describe("Module: Time-Table", async function() {
       .set("Authorization", "Bearer " + token)
       .send({
         weekday: "TUESDAY",
-        startTime: "2023-09-17T10:38:32.127Z",
-        endTime: "2023-09-17T20:38:32.127Z",
+        startTime: "07:30",
+        endTime: "18:30",
         organizationId
       })
-
-    console.log(result.body)
 
     timeTableId = result.body.data.id
 
     assert.isObject(result)
     assert.isObject(result.body)
     expect(result.statusCode).to.be.equal(201)
+  })
+
+  it("Time-Table update (permission: ADMIN)", async function() {
+    const result = await agent
+      .put(path + `/${timeTableId}`)
+      .set("Content-Type", "application/json")
+      .set("Authorization", "Bearer " + token)
+      .send({
+        startTime: "08:30",
+        endTime: "19:30",
+      })
+
+    assert.isObject(result)
+    assert.isObject(result.body)
+    expect(result.statusCode).to.be.equal(200)
   })
 
   it("Time-Table find one (permission: ADMIN)", async function() {
@@ -74,7 +87,7 @@ describe("Module: Time-Table", async function() {
 
     assert.isObject(result)
     assert.isObject(result.body)
-    expect(result.statusCode).to.be.equal(201)
+    expect(result.statusCode).to.be.equal(200)
   })
 
   it("Time-Table list (permission: ADMIN)", async function() {
@@ -90,6 +103,6 @@ describe("Module: Time-Table", async function() {
     assert.isNumber(data.page)
     assert.isNumber(data.perPage)
     assert.isNumber(data.total)
-    expect(result.statusCode).to.be.equal(201)
+    expect(result.statusCode).to.be.equal(200)
   })
 })

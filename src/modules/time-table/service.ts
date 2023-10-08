@@ -27,8 +27,8 @@ export default class TimeTableService {
 
     return {
       list: await prisma.timeTable.findMany(preparedQuery),
-      currentPage: page,
-      perPage: perPage,
+      page,
+      perPage,
       total: await prisma.timeTable.count()
     }
   }
