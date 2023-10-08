@@ -5,20 +5,20 @@ import { expect, assert } from "chai"
 import app from "@/app"
 import config from "@/utils/config"
 import prisma from "@/prisma"
+import testData from "@/__tests__/test-data.json"
 
 const agent = supertest.agent(app)
 const path = `/${config.apiPrefix}/rating`
 
-describe("Module: Rating", async function () {
+describe("Module: Rating", async function() {
   let token = ""
+  let orgId = ""
+  let ratingId = ""
 
-  const orgResponse = await agent.get(`/${config.apiPrefix}/organization/list`)
-  const organization = orgResponse.body.data[0]
-
-  this.beforeAll(async function () {
+  this.beforeAll(async function() {
     await prisma.rating.deleteMany({})
 
-    const result = await agent
+    const loginResult = await agent
       .post(`/${config.apiPrefix}/auth/login`)
       .set("Content-Type", "application/json")
       .send({
@@ -26,18 +26,42 @@ describe("Module: Rating", async function () {
         password: "test-password"
       })
 
-    token = result.body.data
+    console.log(loginResult.body)
+
+    token = loginResult.body.data
+
+    const createdOrg = await agent
+      .post(`/${config.apiPrefix}/organization`)
+      .set("Content-Type", "application/json")
+      .set("Authorization", "Bearer " + token)
+      .send(testData.organizationCreate)
+
+    console.log(createdOrg.body)
+
+    orgId = createdOrg.body.data.id
   })
 
-  it("Create rating (user: USER)", async function () {
+  this.afterAll(async function() {
+    await prisma.rating.deleteMany({
+      where: { id: ratingId }
+    })
+
+    await prisma.organization.deleteMany({
+      where: { id: orgId }
+    })
+  })
+
+  it("Create rating (user: USER)", async function() {
     const result = await agent
       .post(`${path}`)
       .set("Content-Type", "application/json")
       .set("Authorization", "Bearer " + token)
       .send({
-        organization: organization._id,
+        organization: orgId,
         value: 5
       })
+
+    ratingId = result.body.data.id
 
     assert.isObject(result)
     assert.isObject(result.body)

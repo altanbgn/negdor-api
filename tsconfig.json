@@ -8,6 +8,7 @@
     "outDir": "./dist",
     "removeComments": true,
     "importsNotUsedAsValues": "remove",
+    "resolveJsonModule": true,
     "isolatedModules": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,

@@ -4,6 +4,7 @@ import { expect, assert } from "chai"
 // Local
 import app from "@/app"
 import config from "@/utils/config"
+import testData from "@/__tests__/test-data.json"
 
 const agent = supertest.agent(app)
 const path = `/${config.apiPrefix}/organization`
@@ -29,15 +30,7 @@ describe("Module: Organization", function() {
       .post(path)
       .set("Content-Type", "application/json")
       .set("Authorization", `Bearer ${token}`)
-      .send({
-        "name": "Test Organization 1",
-        "shortDescription": "Test Organization short description 1",
-        "fullDescription": "Test Organization full description 1",
-        "emails": ["altanbagana@protonmail.com"],
-        "phonenumbers": ["88789169"],
-        "locations": ["pog123"],
-        "director": "pog 1"
-      })
+      .send(testData.organizationCreate)
 
     organizationId = result.body.data.id
 
@@ -77,15 +70,7 @@ describe("Module: Organization", function() {
       .put(path + `/${organizationId}`)
       .set("Content-Type", "application/json")
       .set("Authorization", `Bearer ${token}`)
-      .send({
-        "name": "Test Organization 1",
-        "shortDescription": "Test Organization short description 1",
-        "fullDescription": "Test Organization full description 1",
-        "emails": ["altanbagana@protonmail.com"],
-        "phonenumbers": ["88789169"],
-        "locations": ["pog123"],
-        "director": "pog 1"
-      })
+      .send(testData.organizationUpdate)
 
     assert.isObject(result)
     assert.isObject(result.body)
