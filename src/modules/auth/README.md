@@ -1,4 +1,15 @@
-## Google login
+## Facebook Login
+```
+https://www.facebook.com/v18.0/dialog/oauth
+?client_id=1259476178086338
+&redirect_uri=http%3A%2F%2Flocalhost%3A4000%2Fv1%2Fauth%2Flogin-facebook
+&scope=email,public_profile
+```
+
+Enabling permissions of `email` and `public_profile` in `Use Cases` on Developers Facebook Dashboard and it should be fine :)
+Redirect URI origin also should be on App Domains on Developers Facebook Dashboard
+
+## Google Login
 
 ```
 https://accounts.google.com/o/oauth2/v2/auth
@@ -10,6 +21,6 @@ https://accounts.google.com/o/oauth2/v2/auth
 &prompt=consent
 ```
 
-Replace the redirect uri with your frontend uri and add it to the `Google Credentials -> Authorised Redirect URIs`
-User will go to this uri and after login, google will send a data on the query on the redirect uri
-Fetch the data and send get request to `/v1/auth/login-google` with the query data and you will get login token :)
+Replace the redirect uri with your prepared frontend uri. Also, add it to the `Google Credentials -> Authorised Redirect URIs`
+User will go to this uri and after login with the necessary data on the query
+Fetch the query data and send get request to `/v1/auth/login-google` with the given query data and you will get login token :)
