@@ -1,4 +1,5 @@
 import httpStatus from "http-status"
+import queryString from "querystring"
 import { JwtPayload, verify, sign } from "jsonwebtoken"
 import { hash, genSalt } from "bcryptjs"
 import { SupportedPlatform } from "@prisma/client"
@@ -99,22 +100,22 @@ export default class AuthService {
     })
   }
 
-
-  // Will generate google login url
-  // const stringifiedParams = queryString.stringify({
-  //   client_id: config.googleAppId,
-  //   redirect_uri: "http://localhost:4000/v1/auth/login-google",
-  //   scope: [
-  //     "https://www.googleapis.com/auth/userinfo.email",
-  //     "https://www.googleapis.com/auth/userinfo.profile",
-  //   ].join(" "),
-  //   response_type: "code",
-  //   access_type: "offline",
-  //   prompt: "consent"
-  // })
-  //
-  // console.log("LOGIN URL :", `https://accounts.google.com/o/oauth2/v2/auth?${stringifiedParams}`)
   public async loginGoogle(query: any): Promise<string> {
+    // Will generate google login url
+    const stringifiedParams = queryString.stringify({
+      client_id: config.googleAppId,
+      redirect_uri: "http://localhost:4000/v1/auth/login-google",
+      scope: [
+        "https://www.googleapis.com/auth/userinfo.email",
+        "https://www.googleapis.com/auth/userinfo.profile",
+      ].join(" "),
+      response_type: "code",
+      access_type: "offline",
+      prompt: "consent"
+    })
+
+    console.log("LOGIN URL :", `https://accounts.google.com/o/oauth2/v2/auth?${stringifiedParams}`)
+
     if (!query || query?.error) {
       throw new ApiError(httpStatus.OK, query?.error_description || "Invalid query")
     }
@@ -213,8 +214,7 @@ export default class AuthService {
     }
   }
 
-
-  // https://www.facebook.com/v18.0/dialog/oauth?client_id=3600630626873133&redirect_uri=http%3A%2F%2Flocalhost%3A4000%2Fv1%2Fauth%2Flogin-facebook&scope=email,public_profile,user_photos
+  // https://www.facebook.com/v18.0/dialog/oauth?client_id=1259476178086338&redirect_uri=http%3A%2F%2Flocalhost%3A4000%2Fv1%2Fauth%2Flogin-facebook&scope=email,public_profile
   public async loginFacebook(query: any): Promise<string> {
     if (!query && typeof query !== "object") {
       throw new ApiError(httpStatus.BAD_REQUEST, "Invalid query")
@@ -230,20 +230,20 @@ export default class AuthService {
       `&redirect_uri=http%3A%2F%2Flocalhost%3A4000%2Fv1%2Fauth%2Flogin-facebook&` +
       `&code=${query.code}`
     )
-    const accessToken = await accessTokenResponse.json()
+    const accessTokenJson = await accessTokenResponse.json()
 
-    if (accessToken?.id || accessToken?.error) {
-      throw new ApiError(httpStatus.BAD_REQUEST, accessToken?.error?.message || "Access token error")
+    if (accessTokenJson?.id || accessTokenJson?.error) {
+      throw new ApiError(httpStatus.BAD_REQUEST, accessTokenJson?.error?.message || "Access token error")
     }
 
     const userDataResponse = await fetch(
       "https://graph.facebook.com/me" +
       `?fields=id,installed,first_name,last_name,email&` +
-      `&access_token=${accessToken.access_token}`
+      `&access_token=${accessTokenJson.access_token}`
     )
     const userData = await userDataResponse.json()
 
-    if (userData?.id || userData?.error) {
+    if (!userData?.id || userData?.error) {
       throw new ApiError(httpStatus.BAD_REQUEST, userData?.error?.message || "User info error")
     }
 
