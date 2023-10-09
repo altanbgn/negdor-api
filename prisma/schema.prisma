@@ -73,6 +73,16 @@ model Organization {
   @@index([id, handle, name])
 }
 
+model Content {
+  id  String @id @unique @default(cuid())
+  key String @unique
+  value Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@index([id, key])
+}
+
 //===========//
 // RELATIONS //
 //===========//

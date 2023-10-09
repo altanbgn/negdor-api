@@ -22,11 +22,9 @@ describe("Module: Rating", async function() {
       .post(`/${config.apiPrefix}/auth/login`)
       .set("Content-Type", "application/json")
       .send({
-        email: "test@gmail.com",
+        email: "test-user@gmail.com",
         password: "test-password"
       })
-
-    console.log(loginResult.body)
 
     token = loginResult.body.data
 
@@ -36,28 +34,20 @@ describe("Module: Rating", async function() {
       .set("Authorization", "Bearer " + token)
       .send(testData.organizationCreate)
 
-    console.log(createdOrg.body)
-
     orgId = createdOrg.body.data.id
   })
 
   this.afterAll(async function() {
-    await prisma.rating.deleteMany({
-      where: { id: ratingId }
-    })
-
-    await prisma.organization.deleteMany({
-      where: { id: orgId }
-    })
+    await prisma.organization.delete({ where: { id: orgId } })
   })
 
-  it("Create rating (user: USER)", async function() {
+  it("Rating create (permission: CLIENT)", async function() {
     const result = await agent
-      .post(`${path}`)
+      .post(path)
       .set("Content-Type", "application/json")
       .set("Authorization", "Bearer " + token)
       .send({
-        organization: orgId,
+        organizationId: orgId,
         value: 5
       })
 
@@ -65,6 +55,56 @@ describe("Module: Rating", async function() {
 
     assert.isObject(result)
     assert.isObject(result.body)
+    assert.isObject(result.body.data)
     expect(result.statusCode).to.be.equal(201)
+  })
+
+  it("Rating list (organization id) (permission: CLIENT)", async function() {
+    const result = await agent
+      .get(`${path}/list?organizationId=${orgId}`)
+      .set("Content-Type", "application/json")
+      .set("Authorization", "Bearer " + token)
+
+    assert.isObject(result)
+    assert.isObject(result.body)
+    assert.isObject(result.body.data)
+    expect(result.statusCode).to.be.equal(200)
+  })
+
+  it("Rating findById (permission: CLIENT)", async function() {
+    const result = await agent
+      .get(path + `/${ratingId}`)
+      .set("Content-Type", "application/json")
+      .set("Authorization", "Bearer " + token)
+
+    assert.isObject(result)
+    assert.isObject(result.body)
+    assert.isObject(result.body.data)
+    expect(result.statusCode).to.be.equal(200)
+  })
+
+  it("Rating updateById (permission: CLIENT)", async function() {
+    const result = await agent
+      .put(path + `/${ratingId}`)
+      .set("Content-Type", "application/json")
+      .set("Authorization", "Bearer " + token)
+      .send({ value: 4 })
+
+    assert.isObject(result)
+    assert.isObject(result.body)
+    assert.isObject(result.body.data)
+    expect(result.statusCode).to.be.equal(200)
+  })
+
+  it("Rating deleteById (permission: CLIENT)", async function() {
+    const result = await agent
+      .delete(path + `/${ratingId}`)
+      .set("Content-Type", "application/json")
+      .set("Authorization", "Bearer " + token)
+
+    assert.isObject(result)
+    assert.isObject(result.body)
+    assert.isObject(result.body.data)
+    expect(result.statusCode).to.be.equal(200)
   })
 })

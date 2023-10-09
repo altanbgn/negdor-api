@@ -11,7 +11,7 @@ const path = `/${config.apiPrefix}/organization`
 
 describe("Module: Organization", function() {
   let token = ""
-  let organizationId = ""
+  let orgId = ""
 
   this.beforeAll(async function() {
     const result = await agent
@@ -25,27 +25,32 @@ describe("Module: Organization", function() {
     token = result.body.data
   })
 
-  it("Organization create (user: USER)", async function() {
+  it("Organization create (permission: CLIENT)", async function() {
     const result = await agent
       .post(path)
       .set("Content-Type", "application/json")
       .set("Authorization", `Bearer ${token}`)
       .send(testData.organizationCreate)
 
-    organizationId = result.body.data.id
+    orgId = result.body.data.id
 
     assert.isObject(result)
     assert.isObject(result.body)
+    assert.isObject(result.body.data)
     expect(result.statusCode).to.be.equal(201)
   })
 
-  it("Organization find one", async function() {
+  it("Organization adding socials (permission: CLIENT)", async function() {
     const result = await agent
-      .get(path + `/${organizationId}`)
+      .put(path + `/${orgId}`)
       .set("Content-Type", "application/json")
+      .set("Authorization", `Bearer ${token}`)
+      .send({ socials: testData.organizationSocials })
 
     assert.isObject(result)
     assert.isObject(result.body)
+    assert.isObject(result.body.data)
+    assert.isObject(result.body.data.socials)
     expect(result.statusCode).to.be.equal(200)
   })
 
@@ -65,9 +70,19 @@ describe("Module: Organization", function() {
     expect(result.statusCode).to.be.equal(200)
   })
 
-  it("Organization update (user: USER)", async function() {
+  it("Organization findById (permission: CLIENT)", async function() {
     const result = await agent
-      .put(path + `/${organizationId}`)
+      .get(path + `/${orgId}`)
+      .set("Content-Type", "application/json")
+
+    assert.isObject(result)
+    assert.isObject(result.body)
+    expect(result.statusCode).to.be.equal(200)
+  })
+
+  it("Organization updateById (permission: CLIENT)", async function() {
+    const result = await agent
+      .put(path + `/${orgId}`)
       .set("Content-Type", "application/json")
       .set("Authorization", `Bearer ${token}`)
       .send(testData.organizationUpdate)
@@ -77,9 +92,9 @@ describe("Module: Organization", function() {
     expect(result.statusCode).to.be.equal(200)
   })
 
-  it("Organization delete (user: USER)", async function() {
+  it("Organization deleteById (permission: CLIENT)", async function() {
     const result = await agent
-      .delete(path + `/${organizationId}`)
+      .delete(path + `/${orgId}`)
       .set("Content-Type", "application/json")
       .set("Authorization", `Bearer ${token}`)
 

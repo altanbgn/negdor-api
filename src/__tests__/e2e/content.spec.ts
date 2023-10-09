@@ -4,14 +4,14 @@ import { expect, assert } from "chai"
 // Local
 import app from "@/app"
 import config from "@/utils/config"
+import prisma from "@/prisma"
 
 const agent = supertest.agent(app)
-const path = `/${config.apiPrefix}/category`
+const path = `/${config.apiPrefix}/content`
 
-describe("Module: Category", function() {
+describe("Module: Content", function() {
   let token = ""
-  let categoryId = ""
-  let childCategoryId = ""
+  let contentKey = ""
 
   this.beforeAll(async function() {
     const result = await agent
@@ -25,14 +25,20 @@ describe("Module: Category", function() {
     token = result.body.data
   })
 
-  it("Category create (permission: ADMIN)", async function() {
+  this.afterAll(async function() {
+    await prisma.content.deleteMany({
+      where: { key: "test-content-key" }
+    })
+  })
+
+  it("Content create (permission: ADMIN)", async function() {
     const result = await agent
       .post(path)
       .set("Content-Type", "application/json")
-      .set("Authorization", "Bearer " + token)
-      .send({ value: "test-parent-category" })
+      .set("Authorization", `Bearer ${token}`)
+      .send({ key: "test-content-key", value: "test-content-value" })
 
-    categoryId = result.body.data.id
+    contentKey = result.body.data.key
 
     assert.isObject(result)
     assert.isObject(result.body)
@@ -40,25 +46,7 @@ describe("Module: Category", function() {
     expect(result.statusCode).to.be.equal(201)
   })
 
-  it("Category create (child) (permission: ADMIN)", async function() {
-    const result = await agent
-      .post(path)
-      .set("Content-Type", "application/json")
-      .set("Authorization", "Bearer " + token)
-      .send({
-        value: "test-child-category",
-        parentId: categoryId
-      })
-
-    childCategoryId = result.body.data.id
-
-    assert.isObject(result)
-    assert.isObject(result.body)
-    assert.isObject(result.body.data)
-    expect(result.statusCode).to.be.equal(201)
-  })
-
-  it("Category list", async function() {
+  it("Content list", async function() {
     const result = await agent
       .get(path + "/list")
       .set("Content-Type", "application/json")
@@ -75,9 +63,9 @@ describe("Module: Category", function() {
     expect(result.statusCode).to.be.equal(200)
   })
 
-  it("Category findById", async function() {
+  it("Content findByKey", async function() {
     const result = await agent
-      .get(path + `/${categoryId}`)
+      .get(path + `/${contentKey}`)
       .set("Content-Type", "application/json")
 
     assert.isObject(result)
@@ -86,15 +74,12 @@ describe("Module: Category", function() {
     expect(result.statusCode).to.be.equal(200)
   })
 
-  it("Category updateById (permission: ADMIN)", async function() {
+  it("Content updateByKey (permission: ADMIN)", async function() {
     const result = await agent
-      .put(path + `/${categoryId}`)
+      .put(path + `/${contentKey}`)
       .set("Content-Type", "application/json")
-      .set("Authorization", "Bearer " + token)
-      .send({
-        icon: "test-icon",
-        value: "test-parent-category-updated"
-      })
+      .set("Authorization", `Bearer ${token}`)
+      .send({ value: "test-content-value-updated" })
 
     assert.isObject(result)
     assert.isObject(result.body)
@@ -102,23 +87,11 @@ describe("Module: Category", function() {
     expect(result.statusCode).to.be.equal(200)
   })
 
-  it("Category deleteById (child) (permission: ADMIN)", async function() {
+  it("Content deleteByKey (permission: ADMIN)", async function() {
     const result = await agent
-      .delete(path + `/${childCategoryId}`)
+      .delete(path + `/${contentKey}`)
       .set("Content-Type", "application/json")
-      .set("Authorization", "Bearer " + token)
-
-    assert.isObject(result)
-    assert.isObject(result.body)
-    assert.isObject(result.body.data)
-    expect(result.statusCode).to.be.equal(200)
-  })
-
-  it("Category deleteById (permission: ADMIN)", async function() {
-    const result = await agent
-      .delete(path + `/${categoryId}`)
-      .set("Content-Type", "application/json")
-      .set("Authorization", "Bearer " + token)
+      .set("Authorization", `Bearer ${token}`)
 
     assert.isObject(result)
     assert.isObject(result.body)

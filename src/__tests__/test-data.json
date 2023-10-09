@@ -28,5 +28,23 @@
       "loc1 updated"
     ],
     "director": "director1 updated"
+  },
+  "organizationSocials": {
+    "facebook": {
+      "link": "facebook.com",
+      "label": "Facebook"
+    },
+    "twitter": {
+      "link": "twitter.com",
+      "label": "Twitter"
+    },
+    "instagram": {
+      "link": "instagram.com",
+      "label": "Instagram"
+    },
+    "youtube": {
+      "link": "youtube.com",
+      "label": "Youtube"
+    }
   }
 }

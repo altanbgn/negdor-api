@@ -5,6 +5,8 @@ import { verifyLogin } from "@/middlewares/permission"
 import config from "./utils/config"
 import authRoutes from "@/modules/auth/routes"
 import categoryRoutes from "@/modules/category/routes"
+import contentRoutes from "@/modules/content/routes"
+import featureRoutes from "@/modules/feature/routes"
 import menuRoutes from "@/modules/menu/routes"
 import menuItemRoutes from "@/modules/menu-item/routes"
 import organizationRoutes from "@/modules/organization/routes"
@@ -23,6 +25,8 @@ router.use(verifyLogin)
 
 router.use("/auth", authRoutes)
 router.use("/category", categoryRoutes)
+router.use("/content", contentRoutes)
+router.use("/feature", featureRoutes)
 router.use("/menu", menuRoutes)
 router.use("/menu-item", menuItemRoutes)
 router.use("/organization", organizationRoutes)
