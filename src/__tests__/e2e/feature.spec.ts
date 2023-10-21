@@ -1,17 +1,15 @@
 import supertest from "supertest"
 import { expect, assert } from "chai"
 
-// Local
 import app from "@/app"
 import config from "@/utils/config"
 
 const agent = supertest.agent(app)
-const path = `/${config.apiPrefix}/category`
+const path = `/${config.apiPrefix}/feature`
 
-describe("Module: Category", function() {
+describe("Module: Feature", function() {
   let token = ""
-  let categoryId = ""
-  let childCategoryId = ""
+  let featureId = ""
 
   this.beforeAll(async function() {
     const result = await agent
@@ -25,32 +23,17 @@ describe("Module: Category", function() {
     token = result.body.data
   })
 
-  it("Category create (permission: ADMIN)", async function() {
-    const result = await agent
-      .post(path)
-      .set("Content-Type", "application/json")
-      .set("Authorization", "Bearer " + token)
-      .send({ value: "test-parent-category" })
-
-    categoryId = result.body.data.id
-
-    assert.isObject(result)
-    assert.isObject(result.body)
-    assert.isObject(result.body.data)
-    expect(result.statusCode).to.be.equal(201)
-  })
-
-  it("Category create (child) (permission: ADMIN)", async function() {
+  it("Feature create (permission: ADMIN)", async function() {
     const result = await agent
       .post(path)
       .set("Content-Type", "application/json")
       .set("Authorization", "Bearer " + token)
       .send({
-        value: "test-child-category",
-        parentId: categoryId
+        icon: "test-feature-icon",
+        value: "test-feature"
       })
 
-    childCategoryId = result.body.data.id
+    featureId = result.body.data.id
 
     assert.isObject(result)
     assert.isObject(result.body)
@@ -58,7 +41,7 @@ describe("Module: Category", function() {
     expect(result.statusCode).to.be.equal(201)
   })
 
-  it("Category list", async function() {
+  it("Feature list", async function() {
     const result = await agent
       .get(path + "/list")
       .set("Content-Type", "application/json")
@@ -75,9 +58,9 @@ describe("Module: Category", function() {
     expect(result.statusCode).to.be.equal(200)
   })
 
-  it("Category findById", async function() {
+  it("Feature findById", async function() {
     const result = await agent
-      .get(path + `/${categoryId}`)
+      .get(path + `/${featureId}`)
       .set("Content-Type", "application/json")
 
     assert.isObject(result)
@@ -86,14 +69,14 @@ describe("Module: Category", function() {
     expect(result.statusCode).to.be.equal(200)
   })
 
-  it("Category updateById (permission: ADMIN)", async function() {
+  it("Feature updateById (permission: ADMIN)", async function() {
     const result = await agent
-      .put(path + `/${categoryId}`)
+      .put(path + `/${featureId}`)
       .set("Content-Type", "application/json")
       .set("Authorization", "Bearer " + token)
       .send({
-        icon: "test-icon",
-        value: "test-parent-category-updated"
+        icon: "test-feature-icon-updated",
+        value: "test-feature-updated"
       })
 
     assert.isObject(result)
@@ -102,21 +85,9 @@ describe("Module: Category", function() {
     expect(result.statusCode).to.be.equal(200)
   })
 
-  it("Category deleteById (child) (permission: ADMIN)", async function() {
+  it("Feature deleteById (permission: ADMIN)", async function() {
     const result = await agent
-      .delete(path + `/${childCategoryId}`)
-      .set("Content-Type", "application/json")
-      .set("Authorization", "Bearer " + token)
-
-    assert.isObject(result)
-    assert.isObject(result.body)
-    assert.isObject(result.body.data)
-    expect(result.statusCode).to.be.equal(200)
-  })
-
-  it("Category deleteById (permission: ADMIN)", async function() {
-    const result = await agent
-      .delete(path + `/${categoryId}`)
+      .delete(path + `/${featureId}`)
       .set("Content-Type", "application/json")
       .set("Authorization", "Bearer " + token)
 

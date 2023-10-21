@@ -4,14 +4,16 @@ import { expect, assert } from "chai"
 // Local
 import app from "@/app"
 import config from "@/utils/config"
+import prisma from "@/prisma"
+import testData from "@/__tests__/test-data.json"
 
 const agent = supertest.agent(app)
-const path = `/${config.apiPrefix}/category`
+const path = `/${config.apiPrefix}/menu`
 
-describe("Module: Category", function() {
+describe("Module: Menu", function() {
   let token = ""
-  let categoryId = ""
-  let childCategoryId = ""
+  let menuId = ""
+  let orgId = ""
 
   this.beforeAll(async function() {
     const result = await agent
@@ -23,34 +25,32 @@ describe("Module: Category", function() {
       })
 
     token = result.body.data
-  })
 
-  it("Category create (permission: ADMIN)", async function() {
-    const result = await agent
-      .post(path)
+    const createdOrg = await agent
+      .post(`/${config.apiPrefix}/organization`)
       .set("Content-Type", "application/json")
       .set("Authorization", "Bearer " + token)
-      .send({ value: "test-parent-category" })
+      .send(testData.organizationCreate)
 
-    categoryId = result.body.data.id
-
-    assert.isObject(result)
-    assert.isObject(result.body)
-    assert.isObject(result.body.data)
-    expect(result.statusCode).to.be.equal(201)
+    orgId = createdOrg.body.data.id
   })
 
-  it("Category create (child) (permission: ADMIN)", async function() {
+  this.afterAll(async function() {
+    await prisma.organization.delete({ where: { id: orgId } })
+  })
+
+  it("Menu create (permission: CLIENT)", async function() {
     const result = await agent
       .post(path)
       .set("Content-Type", "application/json")
       .set("Authorization", "Bearer " + token)
       .send({
-        value: "test-child-category",
-        parentId: categoryId
+        title: "test-menu",
+        description: "test-menu-description",
+        organizationId: orgId,
       })
 
-    childCategoryId = result.body.data.id
+    menuId = result.body.data.id
 
     assert.isObject(result)
     assert.isObject(result.body)
@@ -58,7 +58,7 @@ describe("Module: Category", function() {
     expect(result.statusCode).to.be.equal(201)
   })
 
-  it("Category list", async function() {
+  it("Menu list", async function() {
     const result = await agent
       .get(path + "/list")
       .set("Content-Type", "application/json")
@@ -75,9 +75,9 @@ describe("Module: Category", function() {
     expect(result.statusCode).to.be.equal(200)
   })
 
-  it("Category findById", async function() {
+  it("Menu findById", async function() {
     const result = await agent
-      .get(path + `/${categoryId}`)
+      .get(path + `/${menuId}`)
       .set("Content-Type", "application/json")
 
     assert.isObject(result)
@@ -86,14 +86,14 @@ describe("Module: Category", function() {
     expect(result.statusCode).to.be.equal(200)
   })
 
-  it("Category updateById (permission: ADMIN)", async function() {
+  it("Menu updateById (permission: CLIENT)", async function() {
     const result = await agent
-      .put(path + `/${categoryId}`)
+      .put(path + `/${menuId}`)
       .set("Content-Type", "application/json")
       .set("Authorization", "Bearer " + token)
       .send({
-        icon: "test-icon",
-        value: "test-parent-category-updated"
+        title: "test-menu-updated",
+        description: "test-menu-description-updated",
       })
 
     assert.isObject(result)
@@ -102,21 +102,9 @@ describe("Module: Category", function() {
     expect(result.statusCode).to.be.equal(200)
   })
 
-  it("Category deleteById (child) (permission: ADMIN)", async function() {
+  it("Menu deleteById (permission: CLIENT)", async function() {
     const result = await agent
-      .delete(path + `/${childCategoryId}`)
-      .set("Content-Type", "application/json")
-      .set("Authorization", "Bearer " + token)
-
-    assert.isObject(result)
-    assert.isObject(result.body)
-    assert.isObject(result.body.data)
-    expect(result.statusCode).to.be.equal(200)
-  })
-
-  it("Category deleteById (permission: ADMIN)", async function() {
-    const result = await agent
-      .delete(path + `/${categoryId}`)
+      .delete(path + `/${menuId}`)
       .set("Content-Type", "application/json")
       .set("Authorization", "Bearer " + token)
 

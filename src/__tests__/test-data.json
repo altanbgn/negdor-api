@@ -1,0 +1,50 @@
+{
+  "organizationCreate": {
+    "name": "Test Organization 1",
+    "shortDescription": "Test Organization short description 1",
+    "fullDescription": "Test Organization full description 1",
+    "emails": [
+      "altanbagana@protonmail.com"
+    ],
+    "phonenumbers": [
+      "99999999"
+    ],
+    "locations": [
+      "loc1"
+    ],
+    "director": "director1"
+  },
+  "organizationUpdate": {
+    "name": "Test Organization 1 Updated",
+    "shortDescription": "Test Organization short description 1 Updated",
+    "fullDescription": "Test Organization full description 1 Updated",
+    "emails": [
+      "altanbagana-updated@protonmail.com"
+    ],
+    "phonenumbers": [
+      "11111111"
+    ],
+    "locations": [
+      "loc1 updated"
+    ],
+    "director": "director1 updated"
+  },
+  "organizationSocials": {
+    "facebook": {
+      "link": "facebook.com",
+      "label": "Facebook"
+    },
+    "twitter": {
+      "link": "twitter.com",
+      "label": "Twitter"
+    },
+    "instagram": {
+      "link": "instagram.com",
+      "label": "Instagram"
+    },
+    "youtube": {
+      "link": "youtube.com",
+      "label": "Youtube"
+    }
+  }
+}

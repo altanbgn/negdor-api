@@ -50,7 +50,7 @@ export default class FeatureServices {
       throw new ApiError(httpStatus.BAD_REQUEST, "Invalid id")
     }
 
-    return await prisma.category.update({
+    return await prisma.feature.update({
       where: { id },
       data: payload
     })
