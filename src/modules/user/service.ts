@@ -52,6 +52,7 @@ export default class UserService {
       select: {
         id: true,
         avatar: true,
+        bio: true,
         firstname: true,
         lastname: true,
         username: true,
@@ -161,9 +162,9 @@ export default class UserService {
       to: email,
       subject: "Negdor - Verify your email",
       html: `
-      <h1>Verify your email</h1>
-      <p>Click <a href="${config.appUrl}/user/verify-email?token=${token}">here</a> to verify your email.</p>
-    `
+        <h1>Verify your email</h1>
+        <p>Click <a href="${config.appUrl}/user/verify-email?token=${token}">here</a> to verify your email.</p>
+      `
     })
   }
 

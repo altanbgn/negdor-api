@@ -37,7 +37,6 @@ const createSchema = Joi.object().keys({
   banner: Joi.string(),
 
   images: Joi.array().items(Joi.string()),
-
   features: Joi.array().items(Joi.string()),
   categories: Joi.array().items(Joi.string()),
 

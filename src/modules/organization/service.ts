@@ -140,17 +140,25 @@ export default class OrganizationService {
       throw new ApiError(httpStatus.BAD_REQUEST, "Invalid id")
     }
 
-    const { categories = [], tags, ...queryData } = data
+    const {
+      categories = [],
+      features = [],
+      tags,
+      ...queryData
+    } = data
 
     return await prisma.organization.update({
       where: { id },
       include: {
+        features: true,
         categories: true,
         tags: true,
-        features: true,
       },
       data: {
         ...queryData,
+        features: {
+          set: features.map((featureId: string) => ({ id: featureId }))
+        },
         categories: {
           set: categories.map((categoryId: string) => ({ id: categoryId }))
         }

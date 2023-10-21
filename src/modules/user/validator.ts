@@ -5,6 +5,7 @@ import { passwordErrorHandler } from "@/utils/validation-error-handler"
 
 const createSchema = Joi.object().keys({
   avatar: Joi.string(),
+  bio: Joi.string(),
   email: Joi
     .string()
     .required()
@@ -38,6 +39,7 @@ const createSchema = Joi.object().keys({
 
 const updateSchema = Joi.object().keys({
   avatar: Joi.string(),
+  bio: Joi.string(),
   firstname: Joi.string(),
   lastname: Joi.string(),
   username: Joi.string()
