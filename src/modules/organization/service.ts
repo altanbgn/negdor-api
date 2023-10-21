@@ -39,6 +39,13 @@ export default class OrganizationService {
             endTime: true,
           }
         },
+        features: {
+          select: {
+            id: true,
+            icon: true,
+            value: true,
+          }
+        },
         _count: {
           select: {
             ratings: true,
@@ -79,6 +86,13 @@ export default class OrganizationService {
             endTime: true,
           }
         },
+        features: {
+          select: {
+            id: true,
+            icon: true,
+            value: true,
+          }
+        }
       },
     })
 
@@ -132,7 +146,8 @@ export default class OrganizationService {
       where: { id },
       include: {
         categories: true,
-        tags: true
+        tags: true,
+        features: true,
       },
       data: {
         ...queryData,
