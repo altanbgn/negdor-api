@@ -19,9 +19,9 @@ const findQuerySchema = Joi.object().keys({
   page: Joi.string(),
   perPage: Joi.string(),
   search: Joi
-  .string()
-  .max(255)
-  .error(new ApiError(BAD_REQUEST, "Search max length is 255"))
+    .string()
+    .max(255)
+    .error(new ApiError(BAD_REQUEST, "Search max length is 255"))
 })
 
 export default {
