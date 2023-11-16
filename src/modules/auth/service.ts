@@ -101,21 +101,6 @@ export default class AuthService {
   }
 
   public async loginGoogle(query: any): Promise<string> {
-    // Will generate google login url
-    const stringifiedParams = queryString.stringify({
-      client_id: config.googleAppId,
-      redirect_uri: "http://localhost:4000/v1/auth/login-google",
-      scope: [
-        "https://www.googleapis.com/auth/userinfo.email",
-        "https://www.googleapis.com/auth/userinfo.profile",
-      ].join(" "),
-      response_type: "code",
-      access_type: "offline",
-      prompt: "consent"
-    })
-
-    console.log("LOGIN URL :", `https://accounts.google.com/o/oauth2/v2/auth?${stringifiedParams}`)
-
     if (!query || query?.error) {
       throw new ApiError(httpStatus.OK, query?.error_description || "Invalid query")
     }
@@ -130,12 +115,13 @@ export default class AuthService {
         grant_type: "authorization_code",
         client_id: config.googleAppId,
         client_secret: config.googleAppSecret,
-        redirect_uri: "http://localhost:4000/v1/auth/login-google",
+        redirect_uri: "https://negdor.com/auth/ggl-login",
       })
     })
     const tokenData = await tokenResponse.json()
 
     if (!tokenData.access_token && tokenData.error) {
+      console.log("TOKEN DATA", tokenData)
       throw new ApiError(httpStatus.BAD_REQUEST, tokenData?.error_description || "Access token error")
     }
 
@@ -184,8 +170,8 @@ export default class AuthService {
       } else {
         const user = await prisma.user.create({
           data: {
-            firstname: userData.given_name,
-            lastname: userData.family_name,
+            firstname: userData.given_name || "",
+            lastname: userData.family_name || userData.given_name || "",
             email: userData.email,
             username: userData.email,
           }

@@ -34,7 +34,6 @@ export default class AuthController {
     res.status(httpStatus.OK).send({ data: result })
   })
 
-
   /* `/auth/register` - POST */
   register = catchAsync(async (req: Request, res: Response): Promise<void> => {
     const sanitizedPayload: RegisterPayload = await validator.registerSchema.validateAsync(req.body)
