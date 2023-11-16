@@ -3,6 +3,7 @@ import helmet from "helmet"
 import compression from "compression"
 import cors from "cors"
 import httpStatus from "http-status"
+import path from "path"
 
 // Local
 import config from "@/utils/config"
@@ -25,6 +26,7 @@ app.use(
   })
 )
 
+app.use("/public", express.static(path.join(__dirname + "/../public")))
 app.use(`/${config.apiPrefix}`, routes)
 
 app.use((_req, _res, next) => {
