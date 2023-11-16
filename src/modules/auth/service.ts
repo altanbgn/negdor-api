@@ -269,8 +269,8 @@ export default class AuthService {
       } else {
         const user = await prisma.user.create({
           data: {
-            firstname: userData.first_name,
-            lastname: userData.last_name,
+            firstname: userData.given_name || "",
+            lastname: userData.family_name || userData.given_name || "",
             email: userData.email,
             username: userData.email,
           }
