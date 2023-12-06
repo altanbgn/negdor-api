@@ -16,6 +16,7 @@ export default multer({
   storage: storage,
   limits: {
     fileSize: 1024 * 1024 * 5, // 5MB
+    files: 5
   },
   fileFilter(_req, file, cb) {
     if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
