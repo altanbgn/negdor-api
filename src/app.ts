@@ -19,14 +19,17 @@ app.use(helmet())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(compression())
+app.use("/public",
+  cors({ origin: false }),
+  express.static(path.join(__dirname + "/../public"))
+)
 app.use(
   cors({
     credentials: true,
-    origin: config.env === "development" ? "*" : [config.appUrl || ""]
+    origin: config.env === "development" ? "*" : [config.appUrl || ""],
   })
 )
 
-app.use("/public", express.static(path.join(__dirname + "/../public")))
 app.use(`/${config.apiPrefix}`, routes)
 
 app.use((_req, _res, next) => {
