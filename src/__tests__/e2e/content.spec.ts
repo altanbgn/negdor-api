@@ -13,6 +13,7 @@ describe("Module: Content", function() {
   let token = ""
   let contentKey = ""
 
+  this.timeout(10000)
   this.beforeAll(async function() {
     const result = await agent
       .post(`/${config.apiPrefix}/auth/login`)

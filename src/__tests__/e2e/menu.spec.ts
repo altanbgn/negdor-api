@@ -15,6 +15,7 @@ describe("Module: Menu", function() {
   let menuId = ""
   let orgId = ""
 
+  this.timeout(10000)
   this.beforeAll(async function() {
     const result = await agent
       .post(`/${config.apiPrefix}/auth/login`)

@@ -4,7 +4,7 @@ import ApiError from "@/utils/api-error"
 
 const storage = multer.diskStorage({
   destination: (_req, _file, cb) => {
-    cb(null, "public/")
+    cb(null, "/var/www/public")
   },
   filename: (_req, file, cb) => {
     const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1E9)}`

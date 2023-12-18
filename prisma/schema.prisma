@@ -59,7 +59,7 @@ model Organization {
   banner           String? // Image
   score            Float       @default(0)
   images           String[]
-  features         Feature[]
+  features         String[]
   categories       Category[]
   tags             Tag[]
   menu             Menu[]
@@ -154,15 +154,6 @@ model Tag {
   updatedAt     DateTime       @default(now()) @updatedAt
 
   @@index([id])
-}
-
-model Feature {
-  id            String         @id @unique @default(cuid())
-  icon          String?
-  value         String         @unique
-  organizations Organization[]
-
-  @@index([id, value])
 }
 
 model Menu {

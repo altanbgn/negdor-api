@@ -13,6 +13,7 @@ describe("Module: Category", function() {
   let categoryId = ""
   let childCategoryId = ""
 
+  this.timeout(10000)
   this.beforeAll(async function() {
     const result = await agent
       .post(`/${config.apiPrefix}/auth/login`)

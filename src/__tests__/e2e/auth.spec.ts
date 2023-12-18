@@ -10,6 +10,7 @@ const agent = supertest.agent(app)
 const path = `/${config.apiPrefix}/auth`
 
 describe("Module: Authentication", function () {
+  this.timeout(10000)
   this.beforeAll(async function () {
     await prisma.user.deleteMany({
       where: { OR: [

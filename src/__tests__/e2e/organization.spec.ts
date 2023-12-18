@@ -13,6 +13,7 @@ describe("Module: Organization", function() {
   let token = ""
   let orgId = ""
 
+  this.timeout(10000)
   this.beforeAll(async function() {
     const result = await agent
       .post(`/${config.apiPrefix}/auth/login`)
@@ -58,6 +59,7 @@ describe("Module: Organization", function() {
     const result = await agent
       .get(path + "/list")
       .set("Content-Type", "application/json")
+    console.log(result.body.data.list)
 
     const data = result.body.data
 

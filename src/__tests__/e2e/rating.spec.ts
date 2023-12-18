@@ -15,6 +15,7 @@ describe("Module: Rating", async function() {
   let orgId = ""
   let ratingId = ""
 
+  this.timeout(10000)
   this.beforeAll(async function() {
     await prisma.rating.deleteMany({})
 

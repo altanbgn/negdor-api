@@ -39,13 +39,6 @@ export default class OrganizationService {
             endTime: true,
           }
         },
-        features: {
-          select: {
-            id: true,
-            icon: true,
-            value: true,
-          }
-        },
         _count: {
           select: {
             ratings: true,
@@ -86,13 +79,6 @@ export default class OrganizationService {
             endTime: true,
           }
         },
-        features: {
-          select: {
-            id: true,
-            icon: true,
-            value: true,
-          }
-        }
       },
     })
 
@@ -109,15 +95,12 @@ export default class OrganizationService {
       data: { role: UserRole.CLIENT }
     })
 
-    const { categories = [], features = [], tags, ...queryData } = data
+    const { categories = [], tags, ...queryData } = data
 
     const result = await prisma.organization.create({
       data: {
         ...queryData,
         handle: handleConverter(queryData.handle || queryData.name),
-        features: {
-          connect: features.map((featureId: string) => ({ id: featureId }))
-        },
         categories: {
           connect: categories.map((categoryId: string) => ({ id: categoryId }))
         },
@@ -142,7 +125,6 @@ export default class OrganizationService {
 
     const {
       categories = [],
-      features = [],
       tags,
       ...queryData
     } = data
@@ -150,15 +132,11 @@ export default class OrganizationService {
     return await prisma.organization.update({
       where: { id },
       include: {
-        features: true,
         categories: true,
         tags: true,
       },
       data: {
         ...queryData,
-        features: {
-          set: features.map((featureId: string) => ({ id: featureId }))
-        },
         categories: {
           set: categories.map((categoryId: string) => ({ id: categoryId }))
         }

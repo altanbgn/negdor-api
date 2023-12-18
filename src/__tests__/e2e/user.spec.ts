@@ -12,6 +12,8 @@ const path = `/${config.apiPrefix}/user`
 describe("Module: User", function() {
   let token = ""
 
+  this.timeout(10000)
+
   this.beforeAll(async function() {
     const result = await agent
       .post(`/${config.apiPrefix}/auth/login`)

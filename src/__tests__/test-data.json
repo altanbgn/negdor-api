@@ -3,6 +3,10 @@
     "name": "Test Organization 1",
     "shortDescription": "Test Organization short description 1",
     "fullDescription": "Test Organization full description 1",
+    "features": [
+      "feature1",
+      "feature2"
+    ],
     "emails": [
       "altanbagana@protonmail.com"
     ],
@@ -18,6 +22,10 @@
     "name": "Test Organization 1 Updated",
     "shortDescription": "Test Organization short description 1 Updated",
     "fullDescription": "Test Organization full description 1 Updated",
+    "features": [
+      "feature3",
+      "feature4"
+    ],
     "emails": [
       "altanbagana-updated@protonmail.com"
     ],

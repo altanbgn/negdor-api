@@ -5,7 +5,7 @@ import httpStatus from "http-status"
 import catchAsync from "@/utils/catch-async"
 import config from "@/utils/config"
 
-export default class FeatureController {
+export default class FileController {
   uploadSingle = catchAsync(async (req: Request, res: Response): Promise<void> => {
     if (!req.file) {
       res.status(httpStatus.BAD_REQUEST).send({ message: "Please upload a file!" })
