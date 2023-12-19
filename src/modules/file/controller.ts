@@ -16,7 +16,7 @@ export default class FileController {
       data: {
         filename: req.file?.filename,
         mimetype: req.file?.mimetype,
-        path: config.appUrl + "/" + req.file?.path,
+        path: config.appUrl + "/public/" + req.file?.filename,
         size: req.file?.size,
       }
     })
@@ -35,7 +35,7 @@ export default class FileController {
       result.push({
         filename: file?.filename,
         mimetype: file?.mimetype,
-        path: config.appUrl + "/" + file?.path,
+        path: config.appUrl + "/public/" + file?.filename,
         size: file?.size,
       })
     })
